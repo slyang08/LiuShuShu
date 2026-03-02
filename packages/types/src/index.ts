@@ -1,1 +1,1 @@
-export * from "../../src/product";
+export * from "../../src/durian";
