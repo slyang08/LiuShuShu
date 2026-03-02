@@ -17,6 +17,8 @@
     "@liushushu/types": "workspace:*",
     "@prisma/adapter-pg": "^7.4.2",
     "@prisma/client": "^7.4.2",
+    "@types/cors": "2.8.19",
+    "cors": "2.8.6",
     "express": "^5.2.1",
     "pg": "^8.19.0"
   },

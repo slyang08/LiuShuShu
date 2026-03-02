@@ -5,8 +5,8 @@ import { varietyService } from "../services/varietyService";
 export const varietyController = {
   async getAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const data = await varietyService.getAll();
-      res.json(data);
+      const varieties = await varietyService.getAll();
+      res.json(varieties);
     } catch (err) {
       next(err);
     }
@@ -30,8 +30,8 @@ export const varietyController = {
         return res.status(400).json({ error: "Name is required" });
       }      
 
-      const data = await varietyService.create(name, desc);
-      res.status(201).json(data);
+      const variety = await varietyService.create({ name, desc });
+      res.status(201).json(variety);
     } catch (err) {
       next(err);
     }

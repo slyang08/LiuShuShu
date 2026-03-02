@@ -6,6 +6,12 @@ export const varietyService = {
     return prisma.durianVariety.findMany({
       where: { isActive: true },
       orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        name: true,
+        desc: true,
+        isActive: true,
+      },
     });
   },
 
@@ -16,9 +22,15 @@ export const varietyService = {
     });
   },
 
-  async create(name: string, desc?: string) {
+  async create(data: { name: string, desc?: string }) {
     return prisma.durianVariety.create({
-      data: { name, desc: desc ?? null },
+      data,
+      select: {
+        id: true,
+        name: true,
+        desc: true,
+        isActive: true,
+      },
     });
   },
 

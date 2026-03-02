@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@liushushu/types/*": ["../../packages/shared/src/*"]
     }
   },
   "include": [
