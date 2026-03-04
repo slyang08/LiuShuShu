@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { createInventory } from "../api";
-import type {
+import {
   CreateInventoryDTO,
   CreateInventoryItemDTO,
 } from "@liushushu/shared";
@@ -42,12 +42,12 @@ export default function InventoryForm({ storeId, varieties }: Props) {
 
   const handleSubmit = async () => {
     if (!date) {
-      alert('Please select a date');
+      alert("Please select a date");
       return;
     }
   
     if (items.length === 0) {
-      alert('Please add at least one item');
+      alert("Please add at least one item");
       return;
     }
 

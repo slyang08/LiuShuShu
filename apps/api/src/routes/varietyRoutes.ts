@@ -1,13 +1,13 @@
 // apps/api/src/routes/varietyRoutes.ts
 import { Router } from "express";
-import { varietyController } from "../controllers/varietyController";
+import { createVariety, getAllVarieties, getVarietyById, softDeleteVariety, updateVariety } from "../controllers/varietyController";
 
 const router: Router = Router();
 
-router.get("/", varietyController.getAll);
-router.post("/", varietyController.create);
-router.get("/:id", varietyController.getById);
-router.patch("/:id", varietyController.update);
-router.delete("/:id", varietyController.softDelete);
+router.get("/", getAllVarieties);
+router.post("/", createVariety);
+router.get("/:id", getVarietyById);
+router.patch("/:id", updateVariety);
+router.delete("/:id", softDeleteVariety);
 
 export default router;

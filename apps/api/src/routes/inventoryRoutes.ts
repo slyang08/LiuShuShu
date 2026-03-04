@@ -1,9 +1,11 @@
 // apps/api/src/routes/inventoryRoutes.ts
 import { Router } from "express";
-import { createInventory } from "../controllers/inventoryController";
+import * as inventoryController from "../controllers/inventoryController";
 
 const router: Router = Router();
 
-router.post("/", createInventory);
+router.post("/", inventoryController.createInventory);
+router.get("/:storeId/:date", inventoryController.getInventoryByDate);
+router.get("/:storeId", inventoryController.getAllInventory);
 
 export default router;
