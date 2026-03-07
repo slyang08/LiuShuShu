@@ -1,6 +1,6 @@
 // src/features/inventory/hooks/useTodayInventory.ts
 import { useCallback, useEffect, useState } from "react";
-import { getInventories } from "../api";
+import { getTodayInventory } from "../api";
 import { DurianVariety } from "@liushushu/shared";
 
 export interface InventoryItem {
@@ -33,12 +33,7 @@ export function useTodayInventory(storeId: number): UseTodayInventoryReturn {
       setLoading(true);
       setError(null);
       
-      const inventories: Inventory[] = await getInventories(storeId);
-      const today = new Date().toISOString().split("T")[0];
-      
-      const todayInv: InventoryItem[] = inventories
-        .filter((inv: Inventory) => inv.date.startsWith(today))
-        .flatMap((inv: Inventory) => inv.items);
+      const todayInv: InventoryItem[] = await getTodayInventory(storeId);
       
       setTodayInventory(todayInv);
     } catch (err) {

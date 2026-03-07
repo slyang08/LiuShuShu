@@ -41,6 +41,24 @@ export async function createInventory(data: CreateInventoryDTO) {
   });
 }
 
+export async function getInventories(storeId: number) {
+  return prisma.inventory.findMany({
+    where: {
+      storeId
+    },
+    orderBy: {
+      date: "desc"
+    },
+    include: {
+      items: {
+        include: {
+          variety: true
+        }
+      },
+    },
+  });
+}
+
 export async function getInventoryByDate(storeId: number, date: Date) {
   return prisma.inventory.findUnique({
     where: {
@@ -59,20 +77,29 @@ export async function getInventoryByDate(storeId: number, date: Date) {
   });
 }
 
-export async function getInventories(storeId: number) {
-  return prisma.inventory.findMany({
+export async function getTodayInventory(storeId: number) {
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);  // 00:00:00
+  const todayEnd = new Date();
+  todayEnd.setHours(23, 59, 59, 999); // 23:59:59
+
+  return prisma.inventoryItem.findMany({
     where: {
-      storeId
-    },
-    orderBy: {
-      date: "desc"
+      inventory: {
+        storeId,
+        date: {
+          gte: todayStart,  // >= Start of today
+          lte: todayEnd     // <= End of today
+        }
+      }
     },
     include: {
-      items: {
-        include: {
-          variety: true
-        }
-      },
+      variety: true
     },
+    orderBy: {
+      variety: {
+        name: "asc"
+      }
+    }
   });
 }

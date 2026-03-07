@@ -18,6 +18,16 @@ export async function createInventory(req: Request, res: Response) {
   }
 }
 
+export async function getAllInventory(req: Request, res: Response, next: NextFunction) {
+  try {
+    const storeId = Number(req.params.storeId);
+    const inventories = await inventoryService.getInventories(storeId);
+    res.json(inventories);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export async function getInventoryByDate(req: Request, res: Response, next: NextFunction) {
   try {
     const storeId = Number(req.params.storeId);
@@ -32,11 +42,11 @@ export async function getInventoryByDate(req: Request, res: Response, next: Next
   }
 }
 
-export async function getAllInventory(req: Request, res: Response, next: NextFunction) {
+export async function getTodayInventory(req: Request, res: Response, next: NextFunction) {
   try {
     const storeId = Number(req.params.storeId);
-    const inventories = await inventoryService.getInventories(storeId);
-    res.json(inventories);
+    const items = await inventoryService.getTodayInventory(storeId);
+    res.json(items);
   } catch (error) {
     next(error);
   }

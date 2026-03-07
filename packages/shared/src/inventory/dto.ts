@@ -1,3 +1,4 @@
+// packages/shared/src/inventory/dto.ts
 export interface CreateInventoryItemDTO {
   varietyId: number;
   quantity: number;
