@@ -1,30 +1,40 @@
+// apps/web/src/features/variety/components/VarietyForm.tsx
 "use client";
 
 import { useState } from "react";
-import { createVariety } from "../api";
+import type { Variety } from "../types";
 
-export default function VarietyForm() {
-  const [name, setName] = useState("");
-  const [desc, setDesc] = useState("");
+interface Props {
+  initialValue?: Variety | null;
+  onCreate: (data: { name: string; desc?: string }) => Promise<void>;
+  onUpdate: (id: number, data: { name: string; desc?: string }) => Promise<void>;
+}
+
+export default function VarietyForm({ initialValue, onCreate, onUpdate }: Props) {
+  const [name, setName] = useState(initialValue?.name ?? "");
+  const [desc, setDesc] = useState(initialValue?.desc ?? "");
   const [loading, setLoading] = useState(false);
+
+  const editing = Boolean(initialValue?.id);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    if (!name) {
+    if (!name.trim()) {
       alert("Name is required");
       return;
     }
 
     try {
       setLoading(true);
+      if (editing && initialValue) {
+        await onUpdate(initialValue.id, { name, desc });
+      } else {
+        await onCreate({ name, desc });
 
-      await createVariety({ name, desc });
-
-      setName("");
-      setDesc("");
-
-      window.location.reload();
+        setName("");
+        setDesc("");
+      }
     } catch (error) {
       alert("Failed to create variety");
     } finally {
@@ -36,7 +46,7 @@ export default function VarietyForm() {
     <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
       <div>
         <input
-          placeholder="Variety Name"
+          placeholder="品種名稱 Variety Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
@@ -44,14 +54,14 @@ export default function VarietyForm() {
 
       <div>
         <input
-          placeholder="Description"
+          placeholder="描述 Description"
           value={desc}
           onChange={(e) => setDesc(e.target.value)}
         />
       </div>
 
-      <button type="submit" disabled={loading}>
-        {loading ? "Adding..." : "Add Variety"}
+      <button type="submit" disabled={loading} className="cursor-pointer">
+        {loading ? "增加中 (Adding)" : editing ? "更新品種 Update Variety" : "新增品種 Add Variety"}
       </button>
     </form>
   );

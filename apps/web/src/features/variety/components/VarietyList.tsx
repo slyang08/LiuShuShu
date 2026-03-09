@@ -3,16 +3,34 @@ import { Variety } from "../types";
 
 interface Props {
   varieties: Variety[];
+  onEdit: (v: Variety) => void;
+  onDelete: (id: number) => void;
 }
 
-const VarietyItem = ({ variety }: { variety: Variety }) => (
-  <li className="py-1">
-    <strong>{variety.name}</strong> - {variety.desc || "No description"}
-  </li>
-);
-
-export default function VarietyList({ varieties }: Props) {
+export default function VarietyList({ varieties, onEdit, onDelete }: Props) {
   if (!varieties.length) return <p className="text-gray-500">No varieties yet.</p>;
 
-  return <ul className="space-y-2">{varieties.map((v) => <VarietyItem key={v.id} variety={v} />)}</ul>;
+  return (
+    <ul className="space-y-2">
+      {varieties.map((variety) => (
+        <li key={variety.id} className="flex items-center gap-2">
+          <div className="flex-1">
+            <strong>{variety.name}</strong> - {variety.desc || "No description"}
+          </div>
+          <button
+            onClick={() => onEdit(variety)}
+            className="text-blue-600 text-sm cursor-pointer"
+          >
+            編輯 Edit
+          </button>
+          <button
+            onClick={() => onDelete(variety.id)}
+            className="text-red-600 text-sm cursor-pointer"
+          >
+            刪除 Delete
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
 }
