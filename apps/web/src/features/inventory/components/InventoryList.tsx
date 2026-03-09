@@ -102,14 +102,14 @@ export default function InventoryList({ storeId }: Props) {
             href={`/admin/inventories/${inv.date.split("T")[0]}`}
             className="text-blue-500"
           >
-            Edit
+            編輯 Edit
           </Link>
           
           <ul className="space-y-1">
             {inv.items.map(item => (
               <li key={item.id} className="flex justify-between">
                 <span>{item.variety.name}</span>
-                <span>{item.quantity} pcs - ${Number(item.price).toFixed(2)}</span>
+                <span>{item.quantity} 顆 - ${Number(item.price).toFixed(2)}</span>
               </li>
             ))}
           </ul>

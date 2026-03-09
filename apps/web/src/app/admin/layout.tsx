@@ -1,3 +1,6 @@
+// apps/web/src/app/admin/layout.tsx
+import Link from "next/link";
+
 export default function AdminLayout({
   children,
 }: {
@@ -5,13 +8,13 @@ export default function AdminLayout({
 }) {
   return (
     <div className="flex min-h-screen">
-      <aside className="w-60 bg-gray-100 p-4">
+      <aside className="w-60 bg-blue-400 p-4">
         <nav className="space-y-2">
-          <a href="/admin/inventories">Inventories</a>
+          <Link href="/admin/inventories">庫存 Inventory</Link>
           <br />
-          <a href="/admin/inventories/create">Create Inventory</a>
+          <Link href="/admin/inventories/create">建立庫存 Create Inventory</Link>
           <br />
-          <a href="/admin/varieties">Varieties</a>
+          <Link href="/admin/varieties">榴蓮品種 Varieties</Link>
         </nav>
       </aside>
 

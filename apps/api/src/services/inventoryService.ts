@@ -1,10 +1,11 @@
 // apps/api/src/services/inventoryService.ts
 import { prisma } from "../lib/prisma";
+import { getTodayStoreDate } from "../lib/timezone";
 import { CreateInventoryDTO } from "@liushushu/shared";
 
 export async function createInventory(data: CreateInventoryDTO) {
   const { storeId, date, items } = data;
-  const parsedDate = new Date(date + "T00:00:00Z");
+  const parsedDate = new Date(date);
 
   const existing = await prisma.inventory.findUnique({
     where: {
@@ -78,28 +79,68 @@ export async function getInventoryByDate(storeId: number, date: Date) {
 }
 
 export async function getTodayInventory(storeId: number) {
-  const todayStart = new Date();
-  todayStart.setHours(0, 0, 0, 0);  // 00:00:00
-  const todayEnd = new Date();
-  todayEnd.setHours(23, 59, 59, 999); // 23:59:59
 
-  return prisma.inventoryItem.findMany({
+  const today = getTodayStoreDate("Asia/Kuala_Lumpur");
+
+  const inventory = await prisma.inventory.findUnique({
     where: {
-      inventory: {
+      storeId_date: {
         storeId,
-        date: {
-          gte: todayStart,  // >= Start of today
-          lte: todayEnd     // <= End of today
-        }
+        date: today
       }
     },
     include: {
-      variety: true
-    },
-    orderBy: {
-      variety: {
-        name: "asc"
+      items: {
+        where: {
+          isDeleted: false,
+          quantity: { gt: 0 }
+        },
+        include: {
+          variety: true
+        },
+        orderBy: {
+          variety: {
+            name: "asc"
+          }
+        }
       }
     }
+  });
+
+  return inventory?.items ?? [];
+}
+
+export async function updateInventory(storeId: number, date: Date, items: any[]) {
+  const existing = await prisma.inventory.findUnique({
+    where: { storeId_date: { storeId, date } },
+    include: { items: true }
+  });
+  
+  if (!existing) throw new Error("Inventory not found");
+  
+  return prisma.$transaction(async (tx) => {
+    // Update/Add items
+    for (const item of items) {
+      await tx.inventoryItem.upsert({
+        where: {
+          inventoryId_varietyId: {
+            inventoryId: existing.id,
+            varietyId: item.varietyId
+          }
+        },
+        update: { quantity: item.quantity, price: item.price },
+        create: {
+          inventoryId: existing.id,
+          varietyId: item.varietyId,
+          quantity: item.quantity,
+          price: item.price
+        }
+      });
+    }
+    
+    return tx.inventory.findUnique({
+      where: { id: existing.id },
+      include: { items: { include: { variety: true } } }
+    });
   });
 }

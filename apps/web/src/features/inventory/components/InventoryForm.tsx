@@ -121,7 +121,7 @@ export default function InventoryForm({ storeId, varieties }: Props) {
       ))}
 
       <button onClick={addRow} className="bg-black-200 px-4 py-2">
-        + Add Item
+        + 新增品項 Add Item
       </button>
 
       <button
@@ -129,7 +129,7 @@ export default function InventoryForm({ storeId, varieties }: Props) {
         disabled={loading}
         className="bg-blue-500 text-white px-4 py-2"
       >
-        {loading ? "Saving..." : "Save Inventory"}
+        {loading ? "儲存中... Saving..." : "建立庫存 Save Inventory"}
       </button>
     </div>
   );

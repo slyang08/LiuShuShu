@@ -51,3 +51,14 @@ export async function getTodayInventory(req: Request, res: Response, next: NextF
     next(error);
   }
 }
+
+export async function updateInventory(req: Request, res: Response) {
+  try {
+    const { storeId, date, items } = req.body;
+    const parsedDate = new Date(date + "T00:00:00Z");
+    const inventory = await inventoryService.updateInventory(storeId, parsedDate, items);
+    res.json(inventory);
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
+  }
+}

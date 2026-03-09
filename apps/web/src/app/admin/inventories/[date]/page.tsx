@@ -6,23 +6,48 @@ interface Props {
   params: Promise<{ date: string }>;
 }
 
+async function getAllVarieties() {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/varieties`, {
+      cache: "no-store",
+    });
+    
+    if (!res.ok) {
+      console.warn("❌ Varieties API 404:", res.url, res.status);
+      return [];  // ✅ Returns an empty array, and the page displays normally
+    }
+    return await res.json();
+  } catch (error) {
+    console.error("❌ Varieties fetch failed:", error);
+    return [];  // ✅ No matter any error returns an empty array
+  }
+}
+
+
 export default async function Page({ params }: Props) {
   const { date } = await params;  
 
-  const dateObj = new Date(date + "T00:00:00Z");
-  const inventory = await getInventoryByDate(1, dateObj);
+  const dateObj = new Date(date);
+  
+  // Simultaneously obtain inventory + item list
+  const [inventory, allVarieties] = await Promise.all([
+    getInventoryByDate(1, dateObj),
+    getAllVarieties()
+  ]);
   
   if (!inventory) {
-    return <div>Inventory not found for {date}</div>;
+    return (
+      <div>
+        <p>{date}的庫存還沒有建立哦</p>
+        <p>Inventory not found for {date}</p>
+      </div>
+    );
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-xl font-bold mb-4">
-        Edit Inventory ({date.toString().split("T")[0]})
-      </h1>
-
-      <InventoryEditor inventory={inventory} />
-    </div>
+    <InventoryEditor 
+      inventory={inventory}
+      varieties={allVarieties}
+    />
   );
 }
