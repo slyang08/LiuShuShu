@@ -3,13 +3,14 @@ import { InventoryItem } from "@/features/inventory/hooks/useTodayInventory";
 
 async function getTodayInventory(storeId: number): Promise<InventoryItem[]> {
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
-  const res = await fetch(
-    `${BASE_URL}/inventories/${storeId}/today`,
-    { next: { revalidate: 300 } } // 5 mins ISR (means update data every 5 mins)
+  const res = await fetch(`${BASE_URL}/inventories/${storeId}/today`, {
+      cache: "no-store",
+    }
   );
   
   if (!res.ok) return [];
-  return res.json();
+  const inventory = await res.json();
+  return Array.isArray(inventory) ? inventory : [];
 }
 
 export default async function DuriansPage() {
