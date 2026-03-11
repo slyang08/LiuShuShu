@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createInventory } from "../api";
 import {
   CreateInventoryDTO,
@@ -16,6 +16,13 @@ export default function InventoryForm({ storeId, varieties }: Props) {
   const [date, setDate] = useState("");
   const [items, setItems] = useState<CreateInventoryItemDTO[]>([]);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const penangDate = new Date().toLocaleDateString("sv", {
+      timeZone: "Asia/Kuala_Lumpur",
+    });
+    setDate(penangDate);  // set up as the newest date by default
+  }, []);
 
   const addRow = () => {
     if (!varieties.length) return;
@@ -82,12 +89,22 @@ export default function InventoryForm({ storeId, varieties }: Props) {
 
   return (
     <div className="space-y-4">
-      <input
-        type="date"
-        className="border p-2"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-      />
+      {/* ✅ Display the date of Penang and changeable manually */}
+      <div>
+        <label className="block text-sm font-medium mb-2">
+          庫存日期（檳城時間）
+        </label>
+        <input
+          type="date"
+          className="border p-2"
+          value={date}
+          max={new Date().toLocaleDateString("sv", { timeZone: "Asia/Kuala_Lumpur" })}
+          onChange={(e) => setDate(e.target.value)}
+        />
+        <p className="text-xs text-gray-500 mt-1">
+          自動設定為檳城時間 {date}，可手動調整
+        </p>
+      </div>
 
       {items.map((item, index) => (
         <div key={index} className="flex gap-2">
