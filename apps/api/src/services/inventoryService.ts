@@ -1,7 +1,7 @@
 // apps/api/src/services/inventoryService.ts
 import { prisma } from "../lib/prisma";
 import { getTodayStoreDate } from "../lib/timezone";
-import { CreateInventoryDTO } from "@liushushu/shared";
+import { CreateInventoryDTO, CreateInventoryItemDTO } from "@liushushu/shared";
 
 export async function createInventory(data: CreateInventoryDTO) {
   const { storeId, date, items } = data;
@@ -109,7 +109,7 @@ export async function getTodayInventory(storeId: number) {
   return inventory?.items ?? [];
 }
 
-export async function updateInventory(storeId: number, date: Date, items: any[]) {
+export async function updateInventory(storeId: number, date: Date, items: CreateInventoryItemDTO[]) {
   const existing = await prisma.inventory.findUnique({
     where: { storeId_date: { storeId, date } },
     include: { items: true }
