@@ -2,32 +2,35 @@
   "name": "liushushu",
   "private": true,
   "version": "0.0.1",
-  "packageManager": "pnpm@latest",
+  "packageManager": "pnpm@10.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "pnpm run --parallel dev",
-    "dev:frontend": "pnpm --filter nextjs dev",
-    "dev:backend": "pnpm --filter express dev",
+    "build": "pnpm -r build",
+    "dev": "pnpm -r --parallel dev",
+    "dev:frontend": "pnpm --filter web dev",
+    "dev:backend": "pnpm --filter api dev",
     "format": "prettier --write '**/*.{ts,tsx,js,jsx,json,css}'",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css}\"",
     "format:fix": "prettier --write .",
+    "lint": "pnpm -r lint",
     "prepare": "husky",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prisma:generate": "pnpm --filter api prisma:generate",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "typecheck": "pnpm -r typecheck"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
-      "prettier --write",
-      "git add"
-    ],
-    "*.{js,jsx}": [
-      "prettier --write",
-      "git add"
+    "*.{ts,tsx,js,jsx}": [
+      "prettier --write"
     ],
     "*.{json,css,md}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
+  },
+  "pnpm": {
+    "overrides": {
+      "@types/pg": "8.18.0"
+    }
   },
   "keywords": [],
   "author": "",
@@ -42,6 +45,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.3.3",
     "prettier": "^3.8.1",
-    "prettier-plugin-tailwindcss": "^0.7.2"
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "typescript": "^5.9.3"
   }
 }

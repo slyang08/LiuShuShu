@@ -37,6 +37,7 @@ export default function VarietyForm({ initialValue, onCreate, onUpdate }: Props)
         setDesc("");
       }
     } catch (error) {
+      console.error(error);
       alert("Failed to create variety");
     } finally {
       setLoading(false);
