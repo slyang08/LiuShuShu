@@ -1,13 +1,15 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { CreateInventoryDTO, CreateInventoryItemDTO } from "@liushushu/shared";
+
+import { useState } from "react";
+
+import { useRouter } from "next/navigation";
 
 interface Props {
   inventory: {
     id: number;
-    date: string;  // "20XX-XX-XXT00:00:00.000Z"
+    date: string; // "20XX-XX-XXT00:00:00.000Z"
     storeId: number;
     items: Array<{
       id: number;
@@ -22,7 +24,7 @@ interface Props {
 
 export default function InventoryEditor({ inventory, varieties }: Props) {
   const [items, setItems] = useState<CreateInventoryItemDTO[]>(() =>
-    inventory.items.map(item => ({
+    inventory.items.map((item) => ({
       varietyId: item.varietyId,
       quantity: item.quantity,
       price: item.price,
@@ -61,13 +63,13 @@ export default function InventoryEditor({ inventory, varieties }: Props) {
 
     const payload: CreateInventoryDTO = {
       storeId: inventory.storeId,
-      date: inventory.date.split("T")[0],  // "20XX-XX-XX"
-      items: items.filter(item => item.quantity > 0), // Only save the items which have qualities
+      date: inventory.date.split("T")[0], // "20XX-XX-XX"
+      items: items.filter((item) => item.quantity > 0), // Only save the items which have qualities
     };
 
     try {
       setLoading(true);
-      
+
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/inventories`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -94,25 +96,19 @@ export default function InventoryEditor({ inventory, varieties }: Props) {
   };
 
   return (
-    <div className="space-y-4 p-6 max-w-4xl mx-auto">
+    <div className="mx-auto max-w-4xl space-y-4 p-6">
       <div className="text-center">
-        <h1 className="text-2xl font-bold mb-2">
-          編輯 {inventory.date.split("T")[0]} 庫存
-        </h1>
-        <div className="text-gray-500">
-          店家 ID: {inventory.storeId}
-        </div>
+        <h1 className="mb-2 text-2xl font-bold">編輯 {inventory.date.split("T")[0]} 庫存</h1>
+        <div className="text-gray-500">店家 ID: {inventory.storeId}</div>
       </div>
 
       {/* ✅ Existing Items + New Item Form */}
       {items.map((item, index) => (
-        <div key={index} className="flex gap-3 items-center p-3 bg-blue-500 rounded-lg">
+        <div key={index} className="flex items-center gap-3 rounded-lg bg-blue-500 p-3">
           <select
             value={item.varietyId}
-            onChange={(e) =>
-              updateItem(index, "varietyId", Number(e.target.value))
-            }
-            className="border p-3 rounded-lg flex-1 min-w-50"
+            onChange={(e) => updateItem(index, "varietyId", Number(e.target.value))}
+            className="min-w-50 flex-1 rounded-lg border p-3"
           >
             {varieties.map((v) => (
               <option key={v.id} value={v.id}>
@@ -125,10 +121,8 @@ export default function InventoryEditor({ inventory, varieties }: Props) {
             type="number"
             placeholder="數量"
             value={item.quantity}
-            onChange={(e) =>
-              updateItem(index, "quantity", Number(e.target.value) || 0)
-            }
-            className="border p-3 w-24 rounded-lg text-center"
+            onChange={(e) => updateItem(index, "quantity", Number(e.target.value) || 0)}
+            className="w-24 rounded-lg border p-3 text-center"
             min="0"
           />
 
@@ -137,10 +131,8 @@ export default function InventoryEditor({ inventory, varieties }: Props) {
             placeholder="價格"
             value={item.price}
             step="1"
-            onChange={(e) =>
-              updateItem(index, "price", Number(e.target.value) || 0)
-            }
-            className="border p-3 w-28 rounded-lg text-center"
+            onChange={(e) => updateItem(index, "price", Number(e.target.value) || 0)}
+            className="w-28 rounded-lg border p-3 text-center"
           />
         </div>
       ))}
@@ -148,7 +140,7 @@ export default function InventoryEditor({ inventory, varieties }: Props) {
       {/* ✅ Add item */}
       <button
         onClick={addRow}
-        className="w-full bg-green-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-600 transition-colors"
+        className="w-full rounded-lg bg-green-500 px-6 py-3 font-medium text-white transition-colors hover:bg-green-600"
         disabled={!varieties.length}
       >
         ➕ 新增品項
@@ -158,14 +150,14 @@ export default function InventoryEditor({ inventory, varieties }: Props) {
       <div className="flex gap-4 pt-6">
         <button
           onClick={handleSubmit}
-          disabled={loading || items.filter(item => item.quantity > 0).length === 0}
-          className="flex-1 bg-blue-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-600 disabled:bg-gray-400 transition-colors text-lg"
+          disabled={loading || items.filter((item) => item.quantity > 0).length === 0}
+          className="flex-1 rounded-lg bg-blue-500 px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-blue-600 disabled:bg-gray-400"
         >
           {loading ? "儲存中..." : "💾 儲存更新"}
         </button>
         <button
           onClick={() => router.back()}
-          className="px-8 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 font-medium"
+          className="rounded-lg border border-gray-300 px-8 py-3 font-medium hover:bg-gray-50"
           disabled={loading}
         >
           ← 返回

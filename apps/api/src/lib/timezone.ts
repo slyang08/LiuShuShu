@@ -8,9 +8,9 @@ export function getTodayStoreDate(timezone: string) {
     day: "2-digit",
   }).formatToParts(now);
 
-  const year = parts.find(p => p.type === "year")!.value;
-  const month = parts.find(p => p.type === "month")!.value;
-  const day = parts.find(p => p.type === "day")!.value;
+  const year = parts.find((p) => p.type === "year")!.value;
+  const month = parts.find((p) => p.type === "month")!.value;
+  const day = parts.find((p) => p.type === "day")!.value;
 
   return new Date(`${year}-${month}-${day}`);
 }

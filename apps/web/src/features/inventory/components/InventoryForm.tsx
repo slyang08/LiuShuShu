@@ -1,11 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { CreateInventoryDTO, CreateInventoryItemDTO } from "@liushushu/shared";
+
+import { useEffect, useState } from "react";
+
 import { createInventory } from "../api";
-import {
-  CreateInventoryDTO,
-  CreateInventoryItemDTO,
-} from "@liushushu/shared";
 
 interface Props {
   storeId: number;
@@ -21,7 +20,7 @@ export default function InventoryForm({ storeId, varieties }: Props) {
     const penangDate = new Date().toLocaleDateString("sv", {
       timeZone: "Asia/Kuala_Lumpur",
     });
-    setDate(penangDate);  // set up as the newest date by default
+    setDate(penangDate); // set up as the newest date by default
   }, []);
 
   const addRow = () => {
@@ -52,7 +51,7 @@ export default function InventoryForm({ storeId, varieties }: Props) {
       alert("Please select a date");
       return;
     }
-  
+
     if (items.length === 0) {
       alert("Please add at least one item");
       return;
@@ -61,7 +60,7 @@ export default function InventoryForm({ storeId, varieties }: Props) {
     const payload: CreateInventoryDTO = {
       storeId,
       date,
-      items: items.filter(item => item.quantity > 0), // Filter out invalid items
+      items: items.filter((item) => item.quantity > 0), // Filter out invalid items
     };
 
     try {
@@ -91,9 +90,7 @@ export default function InventoryForm({ storeId, varieties }: Props) {
     <div className="space-y-4">
       {/* ✅ Display the date of Penang and changeable manually */}
       <div>
-        <label className="block text-sm font-medium mb-2">
-          庫存日期（檳城時間）
-        </label>
+        <label className="mb-2 block text-sm font-medium">庫存日期（檳城時間）</label>
         <input
           type="date"
           className="border p-2"
@@ -101,9 +98,7 @@ export default function InventoryForm({ storeId, varieties }: Props) {
           max={new Date().toLocaleDateString("sv", { timeZone: "Asia/Kuala_Lumpur" })}
           onChange={(e) => setDate(e.target.value)}
         />
-        <p className="text-xs text-gray-500 mt-1">
-          自動設定為檳城時間 {date}，可手動調整
-        </p>
+        <p className="mt-1 text-xs text-gray-500">自動設定為檳城時間 {date}，可手動調整</p>
       </div>
 
       {items.map((item, index) => (
@@ -144,7 +139,7 @@ export default function InventoryForm({ storeId, varieties }: Props) {
       <button
         onClick={handleSubmit}
         disabled={loading}
-        className="bg-blue-500 text-white px-4 py-2"
+        className="bg-blue-500 px-4 py-2 text-white"
       >
         {loading ? "儲存中... Saving..." : "建立庫存 Save Inventory"}
       </button>

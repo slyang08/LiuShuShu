@@ -1,7 +1,9 @@
 // src/features/inventory/hooks/useTodayInventory.ts
-import { useCallback, useEffect, useState } from "react";
-import { getTodayInventory } from "../api";
 import { DurianVariety } from "@liushushu/shared";
+
+import { useCallback, useEffect, useState } from "react";
+
+import { getTodayInventory } from "../api";
 
 export interface InventoryItem {
   id: number;
@@ -32,9 +34,9 @@ export function useTodayInventory(storeId: number): UseTodayInventoryReturn {
     try {
       setLoading(true);
       setError(null);
-      
+
       const todayInv: InventoryItem[] = await getTodayInventory(storeId);
-      
+
       setTodayInventory(todayInv);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "載入失敗";

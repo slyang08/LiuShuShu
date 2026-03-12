@@ -1,0 +1,20 @@
+# Dependencies
+**/node_modules/**/*
+.pnp
+.pnp.js
+
+# Build outputs
+.next
+dist
+build
+
+# Prisma
+**/prisma/migrations
+
+# IDE
+.vscode/settings.json
+.idea
+
+# OS
+.DS_Store
+Thumbs.db

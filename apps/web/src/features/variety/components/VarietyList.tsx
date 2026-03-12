@@ -17,15 +17,12 @@ export default function VarietyList({ varieties, onEdit, onDelete }: Props) {
           <div className="flex-1">
             <strong>{variety.name}</strong> - {variety.desc || "No description"}
           </div>
-          <button
-            onClick={() => onEdit(variety)}
-            className="text-blue-600 text-sm cursor-pointer"
-          >
+          <button onClick={() => onEdit(variety)} className="cursor-pointer text-sm text-blue-600">
             編輯 Edit
           </button>
           <button
             onClick={() => onDelete(variety.id)}
-            className="text-red-600 text-sm cursor-pointer"
+            className="cursor-pointer text-sm text-red-600"
           >
             刪除 Delete
           </button>

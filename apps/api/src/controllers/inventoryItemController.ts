@@ -1,6 +1,7 @@
 // apps/api/src/controllers/inventoryItemController.ts
-import { Request, Response } from "express";
 import * as service from "../services/inventoryItemService";
+
+import { Request, Response } from "express";
 
 export async function updateQuantity(req: Request, res: Response) {
   try {
@@ -11,10 +12,7 @@ export async function updateQuantity(req: Request, res: Response) {
       return res.status(400).json({ message: "Invalid item id" });
     }
 
-    const updated = await service.updateInventoryItemQuantity(
-      itemId,
-      Number(quantity)
-    );
+    const updated = await service.updateInventoryItemQuantity(itemId, Number(quantity));
 
     res.json(updated);
   } catch (error: any) {

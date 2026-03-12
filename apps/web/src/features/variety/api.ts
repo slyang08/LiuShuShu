@@ -15,10 +15,7 @@ export async function getVarieties(): Promise<Variety[]> {
   return res.json();
 }
 
-export async function createVariety(data: {
-  name: string;
-  desc?: string;
-}): Promise<Variety> {
+export async function createVariety(data: { name: string; desc?: string }): Promise<Variety> {
   const res = await fetch(`${BASE_URL}/varieties`, {
     method: "POST",
     headers: {
@@ -38,9 +35,9 @@ export async function updateVariety(
   id: number,
   data: {
     name: string;
-    desc: string
-  })
-{
+    desc: string;
+  }
+) {
   const res = await fetch(`${BASE_URL}/varieties/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },

@@ -1,11 +1,7 @@
 // apps/web/src/app/admin/layout.tsx
 import Link from "next/link";
 
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen">
       <aside className="w-60 bg-blue-400 p-4">

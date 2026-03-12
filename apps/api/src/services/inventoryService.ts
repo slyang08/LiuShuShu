@@ -1,7 +1,8 @@
 // apps/api/src/services/inventoryService.ts
+import { CreateInventoryDTO, CreateInventoryItemDTO } from "@liushushu/shared";
+
 import { prisma } from "../lib/prisma";
 import { getTodayStoreDate } from "../lib/timezone";
-import { CreateInventoryDTO, CreateInventoryItemDTO } from "@liushushu/shared";
 
 export async function createInventory(data: CreateInventoryDTO) {
   const { storeId, date, items } = data;
@@ -11,8 +12,8 @@ export async function createInventory(data: CreateInventoryDTO) {
     where: {
       storeId_date: {
         storeId,
-        date: parsedDate
-      }
+        date: parsedDate,
+      },
     },
   });
 
@@ -35,8 +36,8 @@ export async function createInventory(data: CreateInventoryDTO) {
     include: {
       items: {
         include: {
-          variety: true
-        }
+          variety: true,
+        },
       },
     },
   });
@@ -45,16 +46,16 @@ export async function createInventory(data: CreateInventoryDTO) {
 export async function getInventories(storeId: number) {
   return prisma.inventory.findMany({
     where: {
-      storeId
+      storeId,
     },
     orderBy: {
-      date: "desc"
+      date: "desc",
     },
     include: {
       items: {
         include: {
-          variety: true
-        }
+          variety: true,
+        },
       },
     },
   });
@@ -66,13 +67,13 @@ export async function getInventoryByDate(storeId: number, date: Date) {
       storeId_date: {
         storeId,
         date,
-      }
+      },
     },
     include: {
       items: {
         include: {
-          variety: true
-        }
+          variety: true,
+        },
       },
     },
   });
@@ -85,38 +86,42 @@ export async function getTodayInventory(storeId: number) {
     where: {
       storeId_date: {
         storeId,
-        date: today
-      }
+        date: today,
+      },
     },
     include: {
       items: {
         where: {
           isDeleted: false,
-          quantity: { gt: 0 }
+          quantity: { gt: 0 },
         },
         include: {
-          variety: true
+          variety: true,
         },
         orderBy: {
           variety: {
-            name: "asc"
-          }
-        }
-      }
-    }
+            name: "asc",
+          },
+        },
+      },
+    },
   });
 
   return inventory?.items ?? [];
 }
 
-export async function updateInventory(storeId: number, date: Date, items: CreateInventoryItemDTO[]) {
+export async function updateInventory(
+  storeId: number,
+  date: Date,
+  items: CreateInventoryItemDTO[]
+) {
   const existing = await prisma.inventory.findUnique({
     where: { storeId_date: { storeId, date } },
-    include: { items: true }
+    include: { items: true },
   });
-  
+
   if (!existing) throw new Error("Inventory not found");
-  
+
   return prisma.$transaction(async (tx) => {
     // Update/Add items
     for (const item of items) {
@@ -124,22 +129,22 @@ export async function updateInventory(storeId: number, date: Date, items: Create
         where: {
           inventoryId_varietyId: {
             inventoryId: existing.id,
-            varietyId: item.varietyId
-          }
+            varietyId: item.varietyId,
+          },
         },
         update: { quantity: item.quantity, price: item.price },
         create: {
           inventoryId: existing.id,
           varietyId: item.varietyId,
           quantity: item.quantity,
-          price: item.price
-        }
+          price: item.price,
+        },
       });
     }
-    
+
     return tx.inventory.findUnique({
       where: { id: existing.id },
-      include: { items: { include: { variety: true } } }
+      include: { items: { include: { variety: true } } },
     });
   });
 }

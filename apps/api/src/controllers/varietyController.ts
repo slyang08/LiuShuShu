@@ -1,6 +1,7 @@
 // apps/api/src/controllers/varietyController.ts
-import { Request, Response, NextFunction } from "express";
 import { create, getAll, getById, softDelete, update } from "../services/varietyService";
+
+import { NextFunction, Request, Response } from "express";
 
 export async function getAllVarieties(req: Request, res: Response, next: NextFunction) {
   try {

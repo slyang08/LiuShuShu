@@ -14,7 +14,7 @@ export default async function Page() {
 
   return (
     <div className="p-6">
-      <h1 className="text-xl font-bold mb-4">建立每日庫存 Create Daily Inventory</h1>
+      <h1 className="mb-4 text-xl font-bold">建立每日庫存 Create Daily Inventory</h1>
 
       <InventoryForm storeId={1} varieties={varieties} />
     </div>

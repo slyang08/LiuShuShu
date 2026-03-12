@@ -1,6 +1,7 @@
 // apps/api/src/controllers/inventoryController.ts
-import { NextFunction, Request, Response } from "express";
 import * as inventoryService from "../services/inventoryService";
+
+import { NextFunction, Request, Response } from "express";
 
 export async function createInventory(req: Request, res: Response) {
   try {
