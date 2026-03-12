@@ -9,10 +9,25 @@
     "dev": "pnpm run --parallel dev",
     "dev:frontend": "pnpm --filter nextjs dev",
     "dev:backend": "pnpm --filter express dev",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css}\"",
+    "format": "prettier --write '**/*.{ts,tsx,js,jsx,json,css}'",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css}\"",
     "format:fix": "prettier --write .",
+    "prepare": "husky",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.{js,jsx}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.{json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "keywords": [],
   "author": "",
@@ -24,6 +39,8 @@
     "@types/express": "^5.0.6",
     "cors": "2.8.6",
     "dotenv": "^17.3.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.3",
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2"
   }
