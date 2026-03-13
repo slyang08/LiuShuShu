@@ -1,6 +1,5 @@
 // apps/api/src/controllers/inventoryItemController.ts
 import * as service from "../services/inventoryItemService";
-
 import { Request, Response } from "express";
 
 export async function updateQuantity(req: Request, res: Response) {

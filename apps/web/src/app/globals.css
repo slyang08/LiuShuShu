@@ -45,8 +45,6 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
-
-  --breakpoint-oppo: 375px; /* ✅ The breakpoint of OPPO A5 5G for RWD */
 }
 
 :root {

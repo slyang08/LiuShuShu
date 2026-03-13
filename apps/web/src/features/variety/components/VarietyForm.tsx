@@ -1,8 +1,8 @@
 // apps/web/src/features/variety/components/VarietyForm.tsx
+
 "use client";
-
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
-
 import type { Variety } from "../types";
 
 interface Props {
@@ -45,26 +45,36 @@ export default function VarietyForm({ initialValue, onCreate, onUpdate }: Props)
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
-      <div>
-        <input
-          placeholder="品種名稱 Variety Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </div>
+    <form onSubmit={handleSubmit} className="mb-5">
+      <div className="space-y-4">
+        <div>
+          <input
+            type="text"
+            placeholder="品種名稱 Variety Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base shadow-sm transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          />
+        </div>
 
-      <div>
-        <input
-          placeholder="描述 Description"
-          value={desc}
-          onChange={(e) => setDesc(e.target.value)}
-        />
-      </div>
+        <div>
+          <input
+            type="text"
+            placeholder="描述 Description"
+            value={desc}
+            onChange={(e) => setDesc(e.target.value)}
+            className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base shadow-sm transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          />
+        </div>
 
-      <button type="submit" disabled={loading} className="cursor-pointer">
-        {loading ? "增加中 (Adding)" : editing ? "更新品種 Update Variety" : "新增品種 Add Variety"}
-      </button>
+        <Button type="submit" disabled={loading} className="w-full cursor-pointer">
+          {loading
+            ? "增加中 (Adding)"
+            : editing
+              ? "更新品種 Update Variety"
+              : "新增品種 Add Variety"}
+        </Button>
+      </div>
     </form>
   );
 }

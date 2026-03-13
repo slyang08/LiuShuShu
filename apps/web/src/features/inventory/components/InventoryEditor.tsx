@@ -1,10 +1,10 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { CreateInventoryDTO, CreateInventoryItemDTO } from "@liushushu/shared";
-
 import { useState } from "react";
-
 import { useRouter } from "next/navigation";
+import { Trash2 } from "lucide-react";
 
 interface Props {
   inventory: {
@@ -43,6 +43,10 @@ export default function InventoryEditor({ inventory, varieties }: Props) {
         price: 0,
       },
     ]);
+  };
+
+  const removeRow = (index: number) => {
+    setItems((prevItems) => prevItems.filter((_, i) => i !== index));
   };
 
   const updateItem = <K extends keyof CreateInventoryItemDTO>(
@@ -96,72 +100,87 @@ export default function InventoryEditor({ inventory, varieties }: Props) {
   };
 
   return (
-    <div className="mx-auto max-w-4xl space-y-4 p-6">
-      <div className="text-center">
-        <h1 className="mb-2 text-2xl font-bold">編輯 {inventory.date.split("T")[0]} 庫存</h1>
+    <div className="mx-auto max-w-4xl space-y-1 p-6">
+      <div className="mb-4 text-center">
+        <h1 className="text-xl font-bold lg:text-2xl">編輯 {inventory.date.split("T")[0]} 庫存</h1>
         <div className="text-gray-500">店家 ID: {inventory.storeId}</div>
       </div>
 
       {/* ✅ Existing Items + New Item Form */}
       {items.map((item, index) => (
-        <div key={index} className="flex items-center gap-3 rounded-lg bg-blue-500 p-3">
-          <select
-            value={item.varietyId}
-            onChange={(e) => updateItem(index, "varietyId", Number(e.target.value))}
-            className="min-w-50 flex-1 rounded-lg border p-3"
-          >
-            {varieties.map((v) => (
-              <option key={v.id} value={v.id}>
-                {v.name}
-              </option>
-            ))}
-          </select>
+        <div key={index} className="flex items-center rounded-lg lg:gap-3 lg:p-3">
+          <div className="flex flex-col space-y-2">
+            <div className="flex flex-row space-x-2">
+              <select
+                value={item.varietyId}
+                onChange={(e) => updateItem(index, "varietyId", Number(e.target.value))}
+                className="flex-1 rounded-lg border p-3 lg:min-w-50"
+              >
+                {varieties.map((v) => (
+                  <option key={v.id} value={v.id}>
+                    {v.name}
+                  </option>
+                ))}
+              </select>
+              {items.length > 0 && (
+                <Button
+                  type="button"
+                  onClick={() => removeRow(index)}
+                  className="ml-auto h-auto min-w-0 rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white shadow-md"
+                >
+                  <Trash2 />
+                </Button>
+              )}
+            </div>
 
-          <input
-            type="number"
-            placeholder="數量"
-            value={item.quantity}
-            onChange={(e) => updateItem(index, "quantity", Number(e.target.value) || 0)}
-            className="w-24 rounded-lg border p-3 text-center"
-            min="0"
-          />
+            <div className="flex flex-row space-x-2">
+              <input
+                type="number"
+                placeholder="數量"
+                value={item.quantity}
+                onChange={(e) => updateItem(index, "quantity", Number(e.target.value) || 0)}
+                className="w-24 rounded-lg border p-3 text-center"
+                min="0"
+              />
 
-          <input
-            type="number"
-            placeholder="價格"
-            value={item.price}
-            step="1"
-            onChange={(e) => updateItem(index, "price", Number(e.target.value) || 0)}
-            className="w-28 rounded-lg border p-3 text-center"
-          />
+              <input
+                type="number"
+                placeholder="價格"
+                value={item.price}
+                step="1"
+                onChange={(e) => updateItem(index, "price", Number(e.target.value) || 0)}
+                className="w-28 rounded-lg border p-3 text-center"
+              />
+            </div>
+          </div>
         </div>
       ))}
 
       {/* ✅ Add item */}
-      <button
+      <Button
         onClick={addRow}
-        className="w-full rounded-lg bg-green-500 px-6 py-3 font-medium text-white transition-colors hover:bg-green-600"
+        className="mt-2 w-full rounded-lg bg-green-500 px-6 py-3 font-medium text-white transition-colors hover:bg-green-600"
         disabled={!varieties.length}
       >
         ➕ 新增品項
-      </button>
+      </Button>
 
       {/* ✅ Save items */}
-      <div className="flex gap-4 pt-6">
-        <button
+      <div className="flex flex-col gap-4 pt-6 lg:flex-row">
+        <Button
           onClick={handleSubmit}
-          disabled={loading || items.filter((item) => item.quantity > 0).length === 0}
-          className="flex-1 rounded-lg bg-blue-500 px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-blue-600 disabled:bg-gray-400"
+          disabled={loading || items.filter((item) => item.quantity == 0).length === 0}
+          className="rounded-lg bg-blue-500 px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-blue-600 disabled:bg-gray-400 lg:flex-1"
         >
           {loading ? "儲存中..." : "💾 儲存更新"}
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => router.back()}
           className="rounded-lg border border-gray-300 px-8 py-3 font-medium hover:bg-gray-50"
           disabled={loading}
         >
           ← 返回
-        </button>
+        </Button>
       </div>
     </div>
   );

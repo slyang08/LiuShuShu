@@ -4,9 +4,9 @@ import Link from "next/link";
 
 export default function ContactPage() {
   return (
-    <div className="max-w-xl space-y-6 p-6">
-      <section>
-        <div className="flex flex-row">
+    <div className="max-w-xl space-y-2 p-6 lg:space-y-6">
+      <section className="">
+        <div className="mb-2 flex flex-row">
           <h1 className="text-2xl font-bold">聯絡</h1>
           <Link href="/" className="block text-2xl font-bold text-black hover:underline">
             榴蓮樹樹
@@ -41,9 +41,9 @@ export default function ContactPage() {
           </Link>
         </section>
 
-        <section>
-          <p className="mb-1 font-semibold">微信: ElingKi5814</p>
-          <div className="relative flex h-113 w-65.5 flex-col items-center rounded-xl border-2 border-green-100 bg-white p-6 shadow-lg">
+        <p className="mb-1 font-semibold">微信: ElingKi5814</p>
+        <section className="flex flex-col items-center">
+          <div className="relative flex h-100 w-65.5 flex-col items-center rounded-xl border-2 border-green-100 bg-white p-6 shadow-lg lg:h-113 lg:w-78">
             <Image
               src="/LiuShuShu-QR.JPG"
               alt="掃描加微信"
