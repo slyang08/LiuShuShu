@@ -2,7 +2,6 @@
 import inventoryItemRoutes from "./routes/inventoryItemRoutes";
 import inventoryRoutes from "./routes/inventoryRoutes";
 import varietyRoutes from "./routes/varietyRoutes";
-
 import cors from "cors";
 import express, { Express } from "express";
 

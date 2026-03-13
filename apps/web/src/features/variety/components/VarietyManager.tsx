@@ -2,7 +2,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { createVariety, deleteVariety, getVarieties, updateVariety } from "../api";
 import type { Variety } from "../types";
 import VarietyForm from "./VarietyForm";

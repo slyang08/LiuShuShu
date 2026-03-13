@@ -1,5 +1,7 @@
 // apps/web/src/features/variety/components/VarietyList.tsx
+import { Button } from "@/components/ui/button";
 import { Variety } from "../types";
+import { Pencil, Trash2 } from "lucide-react";
 
 interface Props {
   varieties: Variety[];
@@ -13,19 +15,27 @@ export default function VarietyList({ varieties, onEdit, onDelete }: Props) {
   return (
     <ul className="space-y-2">
       {varieties.map((variety) => (
-        <li key={variety.id} className="flex items-center gap-2">
-          <div className="flex-1">
-            <strong>{variety.name}</strong> - {variety.desc || "No description"}
+        <li key={variety.id} className="">
+          <div className="flex flex-col">
+            <div className="flex flex-row justify-between">
+              <strong>{variety.name}</strong>
+              <div className="flex flex-row">
+                <Button
+                  onClick={() => onEdit(variety)}
+                  className="h-6 cursor-pointer text-sm text-blue-600"
+                >
+                  <Pencil />
+                </Button>
+                <Button
+                  onClick={() => onDelete(variety.id)}
+                  className="h-6 cursor-pointer text-sm text-red-600"
+                >
+                  <Trash2 />
+                </Button>
+              </div>
+            </div>
+            {variety.desc || "No description"}
           </div>
-          <button onClick={() => onEdit(variety)} className="cursor-pointer text-sm text-blue-600">
-            編輯 Edit
-          </button>
-          <button
-            onClick={() => onDelete(variety.id)}
-            className="cursor-pointer text-sm text-red-600"
-          >
-            刪除 Delete
-          </button>
         </li>
       ))}
     </ul>

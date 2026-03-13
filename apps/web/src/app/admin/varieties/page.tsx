@@ -2,7 +2,7 @@ import VarietyManager from "@/features/variety/components/VarietyManager";
 
 export default async function VarietiesPage() {
   return (
-    <div style={{ padding: "40px" }}>
+    <div className="space-y-4 px-4">
       <h1>榴蓮品種 Durian Varieties</h1>
 
       <VarietyManager />

@@ -1,10 +1,9 @@
 "use client";
 
 import { CreateInventoryDTO, CreateInventoryItemDTO } from "@liushushu/shared";
-
 import { useEffect, useState } from "react";
-
 import { createInventory } from "../api";
+import { Trash2 } from "lucide-react";
 
 interface Props {
   storeId: number;
@@ -34,6 +33,10 @@ export default function InventoryForm({ storeId, varieties }: Props) {
         price: 0,
       },
     ]);
+  };
+
+  const removeRow = (index: number) => {
+    setItems((prevItems) => prevItems.filter((_, i) => i !== index));
   };
 
   const updateItem = <K extends keyof CreateInventoryItemDTO>(
@@ -87,10 +90,10 @@ export default function InventoryForm({ storeId, varieties }: Props) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="max-w-full space-y-4 overflow-hidden">
       {/* ✅ Display the date of Penang and changeable manually */}
       <div>
-        <label className="mb-2 block text-sm font-medium">庫存日期（檳城時間）</label>
+        <label className="mb-2 block text-sm font-medium">📅 庫存日期（檳城時間）</label>
         <input
           type="date"
           className="border p-2"
@@ -102,40 +105,56 @@ export default function InventoryForm({ storeId, varieties }: Props) {
       </div>
 
       {items.map((item, index) => (
-        <div key={index} className="flex gap-2">
-          <select
-            value={item.varietyId}
-            onChange={(e) => updateItem(index, "varietyId", Number(e.target.value))}
-            className="border p-2"
-          >
-            {varieties.map((v) => (
-              <option key={v.id} value={v.id}>
-                {v.name}
-              </option>
-            ))}
-          </select>
+        <div key={index} className="flex w-full flex-col gap-2">
+          <div className="flex gap-2">
+            <select
+              value={item.varietyId}
+              onChange={(e) => updateItem(index, "varietyId", Number(e.target.value))}
+              className="border px-4"
+            >
+              {varieties.map((v) => (
+                <option key={v.id} value={v.id}>
+                  {v.name}
+                </option>
+              ))}
+            </select>
+            {items.length > 0 && (
+              <button
+                type="button"
+                onClick={() => removeRow(index)}
+                className="ml-auto w-max min-w-0 flex-1 rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white shadow-md"
+              >
+                <Trash2 />
+              </button>
+            )}
+          </div>
 
-          <input
-            type="number"
-            placeholder="Quantity"
-            className="border p-2"
-            onChange={(e) => updateItem(index, "quantity", Number(e.target.value))}
-          />
+          <div className="flex w-full max-w-full min-w-0 gap-2 overflow-hidden">
+            <input
+              type="number"
+              placeholder="Quantity"
+              className="min-w-0 flex-1 border px-3 py-2"
+              value={item.quantity || ""}
+              onChange={(e) => updateItem(index, "quantity", Number(e.target.value))}
+              min="0"
+            />
 
-          <input
-            type="number"
-            placeholder="Price"
-            className="border p-2"
-            step="0.01"
-            onChange={(e) => updateItem(index, "price", Number(e.target.value))}
-          />
+            <input
+              type="number"
+              placeholder="Price"
+              className="min-w-0 flex-1 border px-3 py-2"
+              step="1"
+              value={item.price || ""}
+              onChange={(e) => updateItem(index, "price", Number(e.target.value))}
+              min="0"
+            />
+          </div>
         </div>
       ))}
 
-      <button onClick={addRow} className="bg-black-200 px-4 py-2">
+      <button onClick={addRow} className="bg-black-200 px-3 py-2">
         + 新增品項 Add Item
       </button>
-
       <button
         onClick={handleSubmit}
         disabled={loading}

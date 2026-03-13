@@ -1,6 +1,5 @@
 // apps/web/src/features/inventory/api.ts
 import { CreateInventoryDTO } from "@liushushu/shared";
-
 import { InventoryItem } from "./hooks/useTodayInventory";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;

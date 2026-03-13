@@ -1,6 +1,5 @@
 // apps/api/src/routes/varietyRoutes.ts
 import * as varietyController from "../controllers/varietyController";
-
 import { Router } from "express";
 
 const router: Router = Router();

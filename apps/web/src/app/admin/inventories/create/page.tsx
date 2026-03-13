@@ -13,8 +13,9 @@ export default async function Page() {
   const varieties = await getVarieties();
 
   return (
-    <div className="p-6">
-      <h1 className="mb-4 text-xl font-bold">建立每日庫存 Create Daily Inventory</h1>
+    <div className="px-4 pb-6">
+      <h1 className="text-xl font-bold">建立每日庫存</h1>
+      <h1 className="mb-2 text-xl font-bold">Create Daily Inventory</h1>
 
       <InventoryForm storeId={1} varieties={varieties} />
     </div>

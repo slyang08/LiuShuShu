@@ -6,7 +6,7 @@ export default function Home() {
     <div className="flex min-h-screen flex-col items-center justify-center space-y-6 p-6">
       <h1 className="text-3xl font-bold">榴蓮樹樹</h1>
 
-      <p className="text-gray-600">新鮮榴蓮每日更新</p>
+      <p className="text-gray-600">新鮮榴蓮每日更新中</p>
 
       <div className="flex gap-4">
         <Link href="/durians" className="rounded-lg border px-4 py-2">

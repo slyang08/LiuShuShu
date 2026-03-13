@@ -1,6 +1,5 @@
 // apps/api/src/routes/inventoryRoutes.ts
 import * as inventoryController from "../controllers/inventoryController";
-
 import { Router } from "express";
 
 const router: Router = Router();
