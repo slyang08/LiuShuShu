@@ -18,6 +18,8 @@ COPY apps/api ./apps/api
 
 WORKDIR /app/apps/api
 
+RUN pnpm prisma:generate
+
 # Build TypeScript
 RUN pnpm build
 
