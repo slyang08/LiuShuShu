@@ -18,7 +18,7 @@ COPY apps/api ./apps/api
 
 WORKDIR /app/apps/api
 
-RUN pnpm prisma:generate
+RUN DATABASE_URL="file:./dev.db" pnpm prisma:generate
 
 # Build TypeScript
 RUN pnpm build
