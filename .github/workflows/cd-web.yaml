@@ -1,0 +1,42 @@
+name: CD Web to Render
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/web/**"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "package.json"
+
+env:
+  DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+  RENDER_WEB_DEPLOY_HOOK: ${{ secrets.RENDER_WEB_DEPLOY_HOOK_URL }}
+
+jobs:
+  deploy-web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
+
+      - name: Build & Push Web Docker
+        run: |
+          docker build \
+            --platform=linux/amd64 \
+            -f apps/web/Dockerfile \
+            -t ${{ env.DOCKER_USERNAME }}/liushushu-web:${{ github.sha }} \
+            -t $DOCKER_USERNAME/liushushu-web:latest \
+            .
+          docker push ${{ env.DOCKER_USERNAME }}/liushushu-web:${{ github.sha }}
+          docker push $DOCKER_USERNAME/liushushu-web:latest
+
+      - name: Trigger Render Web Deploy
+        run: |
+          curl -X POST ${{ env.RENDER_WEB_DEPLOY_HOOK }}
