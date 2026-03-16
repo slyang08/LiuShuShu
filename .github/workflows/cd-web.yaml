@@ -15,11 +15,24 @@ env:
   RENDER_WEB_DEPLOY_HOOK: ${{ secrets.RENDER_WEB_DEPLOY_HOOK_URL }}
 
 jobs:
-  deploy-web:
+  build-and-deploy-web:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.1.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      # Pre-check dependencies
+      - run: pnpm install --filter ./apps/web --frozen-lockfile
+
+      # Login Docker
       - name: Login Docker Hub
         uses: docker/login-action@v3
         with:
@@ -32,11 +45,15 @@ jobs:
             --platform=linux/amd64 \
             -f apps/web/Dockerfile \
             -t ${{ env.DOCKER_USERNAME }}/liushushu-web:${{ github.sha }} \
-            -t $DOCKER_USERNAME/liushushu-web:latest \
             .
           docker push ${{ env.DOCKER_USERNAME }}/liushushu-web:${{ github.sha }}
-          docker push $DOCKER_USERNAME/liushushu-web:latest
 
+          docker tag \
+            ${{ env.DOCKER_USERNAME }}/liushushu-web:${{ github.sha }} \
+            ${{ env.DOCKER_USERNAME }}/liushushu-web:latest
+          docker push ${{ env.DOCKER_USERNAME }}/liushushu-web:latest
+
+      # Deploy to Render
       - name: Trigger Render Web Deploy
         run: |
           curl -X POST ${{ env.RENDER_WEB_DEPLOY_HOOK }}
