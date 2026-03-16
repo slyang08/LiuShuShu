@@ -1,0 +1,59 @@
+name: CD API to Render
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/api/**"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "package.json"
+
+env:
+  DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+  RENDER_API_DEPLOY_HOOK: ${{ secrets.RENDER_API_DEPLOY_HOOK_URL }}
+
+jobs:
+  build-and-deploy-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.1.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      # Pre-check dependencies
+      - run: pnpm install --filter ./apps/web --frozen-lockfile
+
+      # Login Docker
+      - name: Login Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
+
+      - name: Build & Push API Docker
+        run: |
+          docker build \
+            --platform=linux/amd64 \
+            -f apps/api/Dockerfile \
+            -t ${{ env.DOCKER_USERNAME }}/liushushu-api:${{ github.sha }} \
+            .
+          docker push ${{ env.DOCKER_USERNAME }}/liushushu-api:${{ github.sha }}
+
+          docker tag \
+            ${{ env.DOCKER_USERNAME }}/liushushu-api:${{ github.sha }} \
+            ${{ env.DOCKER_USERNAME }}/liushushu-api:latest
+          docker push ${{ env.DOCKER_USERNAME }}/liushushu-api:latest
+
+      # Deploy to Render
+      - name: Trigger Render API Deploy
+        run: |
+          curl -X POST ${{ env.RENDER_API_DEPLOY_HOOK }}

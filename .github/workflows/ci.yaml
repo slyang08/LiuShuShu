@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.1.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      # Install all dependencies
+      - run: pnpm install --frozen-lockfile
+
+      # Generate Prisma client
+      - run: pnpm --filter api prisma:generate
+
+      # TypeScript Checks
+      - run: pnpm typecheck
+
+      # Lint Frontend
+      - run: pnpm --filter web lint
+
+      # Build up Frontend and Backend
+      - run: pnpm --filter api build
+      - run: pnpm --filter web build

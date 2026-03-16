@@ -1,18 +1,51 @@
 {
-  "name": "durian-tree",
+  "name": "liushushu",
   "private": true,
   "version": "0.0.1",
-  "packageManager": "pnpm@latest",
+  "packageManager": "pnpm@10.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "pnpm run --parallel dev",
-    "dev:frontend": "pnpm --filter nextjs dev",
-    "dev:backend": "pnpm --filter express dev",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "pnpm -r build",
+    "dev": "pnpm -r --parallel dev",
+    "dev:frontend": "pnpm --filter web dev",
+    "dev:backend": "pnpm --filter api dev",
+    "format": "prettier --write '**/*.{ts,tsx,js,jsx,json,css}'",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css}\"",
+    "format:fix": "prettier --write .",
+    "lint": "pnpm -r lint",
+    "prepare": "husky",
+    "prisma:generate": "pnpm --filter api prisma:generate",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "prettier --write"
+    ],
+    "*.{json,css,md}": [
+      "prettier --write"
+    ]
+  },
+  "pnpm": {
+    "overrides": {
+      "@types/pg": "8.18.0"
+    }
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {}
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
+    "@types/cors": "2.8.19",
+    "@types/dotenv": "^8.2.3",
+    "@types/express": "^5.0.6",
+    "cors": "2.8.6",
+    "dotenv": "^17.3.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.3",
+    "prettier": "^3.8.1",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "typescript": "^5.9.3"
+  }
 }
