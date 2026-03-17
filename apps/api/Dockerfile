@@ -1,51 +1,28 @@
-FROM node:20-alpine AS deps
+FROM node:20-alpine
 
 WORKDIR /app
 
-RUN corepack enable
+# Install dumb-init + corepack
+RUN apk add --no-cache dumb-init && corepack enable
 
+# Clone the entire monorepo (required for the workspace)
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
-
 COPY apps/api/package.json ./apps/api/
-
 COPY packages ./packages
-
-RUN pnpm install --frozen-lockfile
-
-# ---------- Build stage ----------
-FROM node:20-alpine AS builder
-
-WORKDIR /app
-
-COPY --from=deps /app/node_modules ./node_modules
-
 COPY apps/api ./apps/api
 
+# Install all dependencies (stability first)
+RUN pnpm install --frozen-lockfile
+
+# Go to the API directory
 WORKDIR /app/apps/api
 
+# Prisma + TypeScript build
 RUN DATABASE_URL="file:./dev.db" pnpm prisma:generate
-
-# Build TypeScript
 RUN pnpm build
 
-# ---------- Production stage ----------
-FROM node:20-alpine AS runner
-
-WORKDIR /app
-
-RUN apk add --no-cache dumb-init
-
+# Production environment variables
 ENV NODE_ENV=production PORT=8080
 
-# Copy runtime files
-COPY --from=deps /app/node_modules ./node_modules
-
-COPY --from=builder /app/apps/api/dist ./dist
-
-COPY --from=builder /app/apps/api/package.json ./package.json
-
-COPY --from=builder /app/apps/api/prisma ./prisma
-
 EXPOSE 8080
-
 CMD ["dumb-init", "node", "dist/index.js"]
