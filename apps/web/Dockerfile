@@ -1,43 +1,25 @@
-# ---------- Build stage ----------
-FROM node:20-alpine AS builder
+FROM node:20-alpine
 
 WORKDIR /app
 
-RUN corepack enable
+RUN apk add --no-cache dumb-init && corepack enable
 
-# Copy workspace files
+# Clone the entire monorepo
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 COPY apps/web/package.json ./apps/web/
 COPY packages ./packages
-
-# Install dependencies
-RUN pnpm install --filter=./apps/web --frozen-lockfile
-
-# Copy source
 COPY apps/web ./apps/web
+
+RUN pnpm install --frozen-lockfile
 
 WORKDIR /app/apps/web
 
-# Build Next
+# Build (Next.js 16 standard output)
 RUN pnpm build
 
-
-# ---------- Production stage ----------
-FROM node:20-alpine AS runner
-
-WORKDIR /app
-
-RUN apk add --no-cache dumb-init
-
-ENV NODE_ENV=production
-ENV PORT=3000
-ENV HOSTNAME=0.0.0.0
-
-# Copy standalone output
-COPY --from=builder /app/apps/web/.next/standalone ./
-COPY --from=builder /app/apps/web/.next/static ./.next/static
-COPY --from=builder /app/apps/web/public ./public
+# Production environment variables
+ENV NODE_ENV=production PORT=3000 HOSTNAME="0.0.0.0"
 
 EXPOSE 3000
-
-CMD ["dumb-init","node","server.js"]
+# Next.js 16：Run "next start" directly
+CMD ["dumb-init", "npm", "start"]
