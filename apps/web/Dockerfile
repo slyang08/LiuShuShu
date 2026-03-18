@@ -25,7 +25,7 @@ WORKDIR /app
 RUN apk add --no-cache dumb-init
 
 # standalone only
-COPY --from=builder /app/apps/web/.next/standalone ./
+COPY --from=builder /app/apps/web/.next/standalone/apps/web/ ./
 COPY --from=builder /app/apps/web/.next/static ./.next/static
 COPY --from=builder /app/apps/web/public ./public
 
