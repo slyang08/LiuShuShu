@@ -6,7 +6,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "pnpm -r build",
+    "build": "tsc -b",
     "dev": "pnpm -r --parallel dev",
     "dev:frontend": "pnpm --filter web dev",
     "dev:backend": "pnpm --filter api dev",

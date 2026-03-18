@@ -26,7 +26,7 @@ export async function createInventory(data: CreateInventoryDTO) {
       storeId,
       date: parsedDate,
       items: {
-        create: items.map((item) => ({
+        create: items.map((item: CreateInventoryItemDTO) => ({
           varietyId: item.varietyId,
           quantity: item.quantity,
           price: item.price,
