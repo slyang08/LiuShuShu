@@ -1,7 +1,7 @@
 # ---------- base ----------
 FROM node:20-alpine AS base
 WORKDIR /app
-RUN corepack enable
+RUN corepack enable && corepack prepare pnpm@10.1.0 --activate
 
 # ---------- deps ----------
 FROM base AS deps
@@ -10,13 +10,13 @@ COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 COPY apps/api/package.json apps/api/package.json
 COPY packages/shared/package.json packages/shared/package.json
 
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 # ---------- builder ----------
 FROM base AS builder
 
-COPY . .
 COPY --from=deps /app/node_modules ./node_modules
+COPY . .
 
 RUN cd apps/api && npx prisma generate
 
@@ -30,8 +30,8 @@ RUN corepack enable
 
 ENV NODE_ENV=production
 
-COPY apps/api/package.json ./
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
+COPY apps/api/package.json ./apps/api/
 
 RUN pnpm install --prod --frozen-lockfile --ignore-scripts
 
