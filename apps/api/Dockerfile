@@ -1,5 +1,5 @@
-FROM node:20-alpine
-
+# ---------- base ----------
+FROM node:20-alpine AS base
 WORKDIR /app
 
 RUN apk add --no-cache tini
