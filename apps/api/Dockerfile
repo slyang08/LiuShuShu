@@ -1,28 +1,43 @@
-FROM node:20-alpine
-
+# ---------- base ----------
+FROM node:20-alpine AS base
 WORKDIR /app
+RUN corepack enable
 
-# Install dumb-init + corepack
-RUN apk add --no-cache dumb-init && corepack enable
+# ---------- deps ----------
+FROM base AS deps
 
-# Clone the entire monorepo (required for the workspace)
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
-COPY apps/api/package.json ./apps/api/
-COPY packages ./packages
-COPY apps/api ./apps/api
+COPY apps/api/package.json apps/api/package.json
+COPY packages/shared/package.json packages/shared/package.json
 
-# Install all dependencies (stability first)
 RUN pnpm install --frozen-lockfile
 
-# Go to the API directory
-WORKDIR /app/apps/api
+# ---------- builder ----------
+FROM base AS builder
 
-# Prisma + TypeScript build
-RUN DATABASE_URL="file:./dev.db" pnpm prisma:generate
-RUN pnpm build
+COPY . .
+COPY --from=deps /app/node_modules ./node_modules
 
-# Production environment variables
-ENV NODE_ENV=production PORT=8080
+RUN cd apps/api && npx prisma generate
+
+RUN pnpm --filter ./apps/api... build
+
+# ---------- runner ----------
+FROM node:20-alpine AS runner
+WORKDIR /app
+RUN apk add --no-cache tini
+RUN corepack enable
+
+ENV NODE_ENV=production
+
+COPY apps/api/package.json ./
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
+
+RUN pnpm install --prod --frozen-lockfile --ignore-scripts
+
+COPY --from=builder /app/apps/api/dist ./dist
+COPY --from=builder /app/apps/api/prisma ./prisma
 
 EXPOSE 8080
-CMD ["dumb-init", "node", "dist/index.js"]
+ENTRYPOINT ["tini", "--"]
+CMD ["node", "dist/index.js"]
