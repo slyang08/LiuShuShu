@@ -43,8 +43,8 @@ WORKDIR /app/apps/web
 COPY --from=builder /app/apps/web/.next/static ./.next/static
 COPY --from=builder /app/apps/web/public ./public
 
-ENV NODE_ENV=production PORT=3000 HOSTNAME="0.0.0.0"
+WORKDIR /app/apps/web
+
 EXPOSE 3000
 
-# Starts the Next.js server
 CMD ["dumb-init", "node", "server.js"]
