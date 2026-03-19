@@ -37,11 +37,13 @@ ENV HOSTNAME=0.0.0.0
 # Copy build stage and export necessary files for runtime
 COPY --from=builder /app/apps/web/.next/standalone ./
 
-# Starts server.js
+# Jump the director which has server.js
 WORKDIR /app/apps/web
 # Copy static assets and public files
 COPY --from=builder /app/apps/web/.next/static ./.next/static
 COPY --from=builder /app/apps/web/public ./public
+
+WORKDIR /app/apps/web
 
 EXPOSE 3000
 
