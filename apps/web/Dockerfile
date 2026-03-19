@@ -44,7 +44,9 @@ WORKDIR /app/apps/web
 COPY --from=builder /app/apps/web/.next/static ./.next/static
 COPY --from=builder /app/apps/web/public ./public
 
+
+WORKDIR /app/apps/web
+
 EXPOSE 3000
 
-# Starts the Next.js server
 CMD ["dumb-init", "node", "server.js"]
