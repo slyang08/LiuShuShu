@@ -38,6 +38,8 @@ COPY --from=builder /app/apps/web/.next/standalone ./
 COPY --from=builder /app/apps/web/.next/static ./.next/static
 COPY --from=builder /app/apps/web/public ./public
 
+WORKDIR /app/apps/web
+
 EXPOSE 3000
 
-CMD ["dumb-init","node","server.js"]
+CMD ["dumb-init", "node", "server.js"]
