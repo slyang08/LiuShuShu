@@ -1,4 +1,5 @@
 // apps/api/src/app.ts
+import authRoutes from "./routes/authRoutes";
 import inventoryItemRoutes from "./routes/inventoryItemRoutes";
 import inventoryRoutes from "./routes/inventoryRoutes";
 import varietyRoutes from "./routes/varietyRoutes";
@@ -16,9 +17,10 @@ app.use(
 
 app.use(express.json());
 
-app.use("/inventories", inventoryRoutes);
+app.use("/admin/auth", authRoutes);
+app.use("/admin/inventories", inventoryRoutes);
 app.use("/inventory-items", inventoryItemRoutes);
-app.use("/varieties", varietyRoutes);
+app.use("/admin/varieties", varietyRoutes);
 
 app.get("/", (req, res) => {
   res.send("Liu Shu Shu 🌳");

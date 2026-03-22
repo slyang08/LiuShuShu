@@ -3,7 +3,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import type { Variety } from "../types";
+import type { Variety } from "../../../../../../packages/shared/src/variety/types";
 
 interface Props {
   initialValue?: Variety | null;
