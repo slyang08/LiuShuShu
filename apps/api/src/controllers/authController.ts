@@ -1,3 +1,4 @@
+// apps/api/src/controllers/authController.ts
 import { LoginInput, RegisterInput } from "@liushushu/shared/src/auth/types";
 import * as authService from "../services/authService";
 import { Request, Response } from "express";

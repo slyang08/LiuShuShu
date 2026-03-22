@@ -24,7 +24,10 @@ app.use(express.json());
 app.use("/admin/auth", authRoutes);
 app.use("/admin/inventories", inventoryRoutes);
 app.use("/inventory-items", inventoryItemRoutes);
+<<<<<<< HEAD
 app.use("/admin/stores", storeRoutes);
+=======
+>>>>>>> 5e2ea4f (feat: add login auth for admin (#27))
 app.use("/admin/varieties", varietyRoutes);
 
 app.get("/", (req, res) => {

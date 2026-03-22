@@ -2,11 +2,6 @@
 FROM node:20-alpine AS builder
 
 WORKDIR /app
-RUN corepack enable
-COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
-COPY apps/web/package.json ./apps/web/
-COPY packages ./packages
-RUN pnpm install --frozen-lockfile --filter=./apps/web
 
 # Install dumb-init + corepack
 RUN apk add --no-cache dumb-init && corepack enable
@@ -46,11 +41,6 @@ COPY --from=builder /app/apps/web/.next/standalone ./
 WORKDIR /app/apps/web
 
 # Copy static assets and public files
-COPY --from=builder /app/apps/web/.next/static ./.next/static
-COPY --from=builder /app/apps/web/public ./public
-
-# standalone only
-COPY --from=builder /app/apps/web/.next/standalone ./
 COPY --from=builder /app/apps/web/.next/static ./.next/static
 COPY --from=builder /app/apps/web/public ./public
 
