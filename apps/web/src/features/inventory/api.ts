@@ -3,7 +3,11 @@ import { CreateInventoryDTO } from "@liushushu/shared";
 import { InventoryItem } from "@liushushu/shared/inventory/types";
 
 export async function createInventory(data: CreateInventoryDTO) {
+<<<<<<< HEAD
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/inventories`, {
+=======
+  const res = await fetch(`${BASE_URL}/admin/inventories`, {
+>>>>>>> 88510b6 (feat: add login auth for admin (#27))
     method: "POST",
     credentials: "include",
     headers: {
@@ -20,8 +24,13 @@ export async function createInventory(data: CreateInventoryDTO) {
   return res.json();
 }
 
+<<<<<<< HEAD
 export async function getInventories() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/inventories`, {
+=======
+export async function getInventories(storeId: number) {
+  const res = await fetch(`${BASE_URL}/admin/inventories/${storeId}`, {
+>>>>>>> 88510b6 (feat: add login auth for admin (#27))
     cache: "no-store",
   });
   if (!res.ok) throw new Error("Failed to fetch inventories");
