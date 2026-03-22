@@ -1,35 +1,50 @@
 # ---------- base ----------
 FROM node:20-alpine AS deps
-WORKDIR /app
-RUN corepack enable
-COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
-COPY apps/web/package.json ./apps/web/
-COPY packages ./packages
-RUN pnpm install --frozen-lockfile --filter=./apps/web
 
-# ---------- runner ----------
-FROM node:20-alpine AS builder
 WORKDIR /app
-RUN corepack enable
-COPY --from=deps /app/node_modules ./node_modules
+
+# Install dumb-init + corepack
+RUN apk add --no-cache dumb-init && corepack enable
+
+# Copy workspace metadata
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 COPY apps/web/package.json ./apps/web/
 COPY packages ./packages
+# Copy source
 COPY apps/web ./apps/web
+
+# Install dependency（install WEB only）
+RUN pnpm install --filter=./apps/web --frozen-lockfile
+
 WORKDIR /app/apps/web
+
+# Build Next.js (with Tailwind CSS)
 RUN pnpm build
 
-# ---------- runner ----------
+# ---------- Production stage ----------
 FROM node:20-alpine AS runner
+
 WORKDIR /app
+
+# Install dumb-init
 RUN apk add --no-cache dumb-init
 
-# standalone only
+# Set up environment variables
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+
+# Copy build stage and export necessary files for runtime
 COPY --from=builder /app/apps/web/.next/standalone ./
+
+# Starts server.js
+WORKDIR /app/apps/web
+# Copy static assets and public files
 COPY --from=builder /app/apps/web/.next/static ./.next/static
 COPY --from=builder /app/apps/web/public ./public
 
 ENV NODE_ENV=production PORT=3000 HOSTNAME="0.0.0.0"
 EXPOSE 3000
 
+# Starts the Next.js server
 CMD ["dumb-init", "node", "server.js"]

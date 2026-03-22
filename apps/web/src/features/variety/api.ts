@@ -1,10 +1,10 @@
 // apps/web/src/features/variety/api.ts
-import { Variety } from "../variety/types";
+import { Variety } from "../../../../../packages/shared/src/variety/types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 export async function getVarieties(): Promise<Variety[]> {
-  const res = await fetch(`${BASE_URL}/varieties`, {
+  const res = await fetch(`${BASE_URL}/admin/varieties`, {
     cache: "no-store",
   });
 
@@ -16,8 +16,9 @@ export async function getVarieties(): Promise<Variety[]> {
 }
 
 export async function createVariety(data: { name: string; desc?: string }): Promise<Variety> {
-  const res = await fetch(`${BASE_URL}/varieties`, {
+  const res = await fetch(`${BASE_URL}/admin/varieties`, {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -38,8 +39,9 @@ export async function updateVariety(
     desc: string;
   }
 ) {
-  const res = await fetch(`${BASE_URL}/varieties/${id}`, {
+  const res = await fetch(`${BASE_URL}/admin/varieties/${id}`, {
     method: "PATCH",
+    credentials: "include",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
@@ -48,8 +50,9 @@ export async function updateVariety(
 }
 
 export async function deleteVariety(id: number) {
-  const res = await fetch(`${BASE_URL}/varieties/${id}`, {
+  const res = await fetch(`${BASE_URL}/admin/varieties/${id}`, {
     method: "DELETE",
+    credentials: "include",
   });
   if (!res.ok) throw new Error(await res.text());
 }
