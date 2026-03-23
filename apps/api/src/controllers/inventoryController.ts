@@ -4,13 +4,19 @@ import { NextFunction, Request, Response } from "express";
 
 export async function createInventory(req: Request, res: Response) {
   try {
-    const { storeId, date, items } = req.body;
+    const { date, items } = req.body;
 
-    const inventory = await inventoryService.createInventory({
-      storeId,
-      date,
-      items,
-    });
+    const storeId = req.admin?.storeId;
+
+    if (!storeId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    if (!items || items.length === 0) {
+      return res.status(400).json({ message: "Items required" });
+    }
+
+    const inventory = await inventoryService.createInventory(storeId, date, items);
 
     res.status(201).json(inventory);
   } catch (error: any) {
@@ -20,7 +26,12 @@ export async function createInventory(req: Request, res: Response) {
 
 export async function getAllInventory(req: Request, res: Response, next: NextFunction) {
   try {
-    const storeId = Number(req.params.storeId);
+    const storeId = req.admin?.storeId;
+
+    if (!storeId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
     const inventories = await inventoryService.getInventories(storeId);
     res.json(inventories);
   } catch (error) {
@@ -30,7 +41,12 @@ export async function getAllInventory(req: Request, res: Response, next: NextFun
 
 export async function getInventoryByDate(req: Request, res: Response, next: NextFunction) {
   try {
-    const storeId = Number(req.params.storeId);
+    const storeId = req.admin?.storeId;
+
+    if (!storeId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
     const dateString = req.params.date;
     const date = new Date(dateString + "T00:00:00Z");
     const inventory = await inventoryService.getInventoryByDate(storeId, date);
@@ -44,7 +60,12 @@ export async function getInventoryByDate(req: Request, res: Response, next: Next
 
 export async function getTodayInventory(req: Request, res: Response, next: NextFunction) {
   try {
-    const storeId = Number(req.params.storeId);
+    const storeId = req.admin?.storeId;
+
+    if (!storeId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
     const items = await inventoryService.getTodayInventory(storeId);
     res.json(items);
   } catch (error) {
@@ -54,7 +75,13 @@ export async function getTodayInventory(req: Request, res: Response, next: NextF
 
 export async function updateInventory(req: Request, res: Response) {
   try {
-    const { storeId, date, items } = req.body;
+    const storeId = req.admin?.storeId;
+
+    if (!storeId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const { date, items } = req.body;
     const parsedDate = new Date(date + "T00:00:00Z");
     const inventory = await inventoryService.updateInventory(storeId, parsedDate, items);
     res.json(inventory);

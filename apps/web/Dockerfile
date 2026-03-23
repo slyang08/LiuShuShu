@@ -1,5 +1,5 @@
 # ---------- base ----------
-FROM node:20-alpine AS deps
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 

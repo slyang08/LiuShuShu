@@ -20,10 +20,6 @@ interface Inventory {
   items: InventoryItem[];
 }
 
-interface Props {
-  storeId: number;
-}
-
 const today = new Date().toLocaleDateString("sv", {
   timeZone: "Asia/Kuala_Lumpur",
 }); // YYYY-MM-DD
@@ -56,13 +52,13 @@ function DateSelector({
   );
 }
 
-export default function InventoryList({ storeId }: Props) {
+export default function InventoryList() {
   const [inventories, setInventories] = useState<Inventory[]>([]);
   const [selectedDate, setSelectedDate] = useState<string>("");
 
   useEffect(() => {
-    getInventories(storeId).then(setInventories).catch(console.error);
-  }, [storeId]);
+    getInventories().then(setInventories).catch(console.error);
+  }, []);
 
   const filteredInventories = selectedDate
     ? inventories.filter((inv) => inv.date.startsWith(selectedDate))

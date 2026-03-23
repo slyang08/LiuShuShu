@@ -7,7 +7,16 @@ services:
     ports:
       - "8080:8080"
     environment:
+      DATABASE_URL: postgresql://postgres.jgaxwaoxefsiztzahmni:twk2YvQHq4kE2emX@aws-1-ca-central-1.pooler.supabase.com:6543/postgres?pgbouncer=true
       NODE_ENV: production
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - liushushu-net
 
   web:
     build:
@@ -16,7 +25,14 @@ services:
     ports:
       - "3000:3000"
     environment:
+      NEXT_PUBLIC_API_URL: http://api:8080
       NODE_ENV: production
-      API_URL: http://api:8080
     depends_on:
-      - api
+      api:
+        condition: service_healthy
+    networks:
+      - liushushu-net
+
+networks:
+  liushushu-net:
+    driver: bridge

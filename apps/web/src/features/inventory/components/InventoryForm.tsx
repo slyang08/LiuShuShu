@@ -1,30 +1,51 @@
+// apps/web/src/features/inventory/components/InventoryForm.tsx
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { getMe } from "@/features/auth/api";
+import { getVarieties } from "@/features/variety/api";
 import { CreateInventoryDTO, CreateInventoryItemDTO } from "@liushushu/shared";
 import { useEffect, useState } from "react";
 import { createInventory } from "../api";
 import { Trash2 } from "lucide-react";
 
-interface Props {
-  storeId: number;
-  varieties: { id: number; name: string }[];
-}
-
-export default function InventoryForm({ storeId, varieties }: Props) {
+export default function InventoryForm() {
+  const [storeId, setStoreId] = useState<number | null>(null);
+  const [varieties, setVarieties] = useState<{ id: number; name: string }[]>([]);
+  const [loadingVarieties, setLoadingVarieties] = useState(true);
   const [date, setDate] = useState("");
   const [items, setItems] = useState<CreateInventoryItemDTO[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [Submitting, setSubmitting] = useState(false);
 
+  // Fetch user and varieties on client side
+  useEffect(() => {
+    getMe()
+      .then((user) => {
+        setStoreId(user.storeId);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch user:", err);
+      });
+    getVarieties()
+      .then((data) => {
+        setVarieties(data);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch varieties:", err);
+      })
+      .finally(() => setLoadingVarieties(false));
+  }, []);
+
+  // Set default Penang date
   useEffect(() => {
     const penangDate = new Date().toLocaleDateString("sv", {
       timeZone: "Asia/Kuala_Lumpur",
     });
-    setDate(penangDate); // set up as the newest date by default
+    setDate(penangDate);
   }, []);
 
   const addRow = () => {
     if (!varieties.length) return;
-
     setItems([
       ...items,
       {
@@ -36,7 +57,7 @@ export default function InventoryForm({ storeId, varieties }: Props) {
   };
 
   const removeRow = (index: number) => {
-    setItems((prevItems) => prevItems.filter((_, i) => i !== index));
+    setItems((prev) => prev.filter((_, i) => i !== index));
   };
 
   const updateItem = <K extends keyof CreateInventoryItemDTO>(
@@ -49,7 +70,14 @@ export default function InventoryForm({ storeId, varieties }: Props) {
     setItems(updated);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!storeId) {
+      alert("Admin not loaded");
+      return;
+    }
+
     if (!date) {
       alert("Please select a date");
       return;
@@ -61,37 +89,48 @@ export default function InventoryForm({ storeId, varieties }: Props) {
     }
 
     const payload: CreateInventoryDTO = {
-      storeId,
       date,
-      items: items.filter((item) => item.quantity > 0), // Filter out invalid items
+      items: items.filter((item) => item.quantity > 0),
     };
 
     try {
-      setLoading(true);
+      setSubmitting(true);
       await createInventory(payload);
       alert("Inventory created!");
-
       setDate("");
       setItems([]);
     } catch (error) {
-      let errorMessage = "Failed to create inventory";
-
-      if (error instanceof Error) {
-        errorMessage = error.message;
-      } else if (error && typeof error === "object" && "message" in error) {
-        errorMessage = (error as { message?: string }).message || errorMessage;
-      }
-
+      let msg = "Failed to create inventory";
+      if (error instanceof Error) msg = error.message;
       console.error("Inventory creation failed:", error);
-      alert(errorMessage);
+      alert(msg);
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   };
 
+  if (loadingVarieties) return <p>Loading varieties...</p>;
+
+  if (varieties.length === 0) {
+    return (
+      <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-6">
+        <h2 className="mb-2 text-lg font-semibold text-yellow-800">還沒有任何榴蓮品種的資料</h2>
+        <p className="mb-4 text-yellow-700">
+          請先到 <strong>榴蓮品種</strong> 新增榴蓮品種
+        </p>
+        <a
+          href="/admin/varieties"
+          className="inline-flex items-center rounded-lg bg-yellow-500 px-4 py-2 text-white hover:bg-yellow-600"
+        >
+          前往榴蓮品種 →
+        </a>
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-full space-y-4 overflow-hidden">
-      {/* ✅ Display the date of Penang and changeable manually */}
+    <form onSubmit={handleSubmit} className="max-w-full space-y-4 overflow-hidden">
+      {/* Date input */}
       <div>
         <label className="mb-2 block text-sm font-medium">📅 庫存日期（檳城時間）</label>
         <input
@@ -104,6 +143,7 @@ export default function InventoryForm({ storeId, varieties }: Props) {
         <p className="mt-1 text-xs text-gray-500">自動設定為檳城時間 {date}，可手動調整</p>
       </div>
 
+      {/* Inventory items */}
       {items.map((item, index) => (
         <div key={index} className="flex w-full flex-col gap-2">
           <div className="flex gap-2">
@@ -118,17 +158,14 @@ export default function InventoryForm({ storeId, varieties }: Props) {
                 </option>
               ))}
             </select>
-            {items.length > 0 && (
-              <button
-                type="button"
-                onClick={() => removeRow(index)}
-                className="ml-auto w-max min-w-0 flex-1 rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white shadow-md"
-              >
-                <Trash2 />
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={() => removeRow(index)}
+              className="ml-auto w-max min-w-0 flex-1 rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white shadow-md"
+            >
+              <Trash2 />
+            </button>
           </div>
-
           <div className="flex w-full max-w-full min-w-0 gap-2 overflow-hidden">
             <input
               type="number"
@@ -138,30 +175,33 @@ export default function InventoryForm({ storeId, varieties }: Props) {
               onChange={(e) => updateItem(index, "quantity", Number(e.target.value))}
               min="0"
             />
-
             <input
               type="number"
               placeholder="Price"
               className="min-w-0 flex-1 border px-3 py-2"
-              step="1"
               value={item.price || ""}
               onChange={(e) => updateItem(index, "price", Number(e.target.value))}
               min="0"
+              step="1"
             />
           </div>
         </div>
       ))}
 
-      <button onClick={addRow} className="bg-black-200 px-3 py-2">
-        + 新增品項 Add Item
-      </button>
-      <button
-        onClick={handleSubmit}
-        disabled={loading}
-        className="bg-blue-500 px-4 py-2 text-white"
-      >
-        {loading ? "儲存中... Saving..." : "建立庫存 Save Inventory"}
-      </button>
-    </div>
+      {/* Add item & submit */}
+      <div className="flex flex-col gap-2">
+        <Button type="button" onClick={addRow} className="px-3 py-2">
+          + 新增品項 Add Item
+        </Button>
+        <Button
+          type="submit"
+          onClick={handleSubmit}
+          disabled={Submitting}
+          className="bg-blue-500 px-4 py-2 text-white"
+        >
+          {Submitting ? "儲存中... Saving..." : "建立庫存 Save Inventory"}
+        </Button>
+      </div>
+    </form>
   );
 }

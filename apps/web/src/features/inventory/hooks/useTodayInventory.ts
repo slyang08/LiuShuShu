@@ -23,7 +23,7 @@ interface UseTodayInventoryReturn {
   refetch: () => Promise<void>;
 }
 
-export function useTodayInventory(storeId: number): UseTodayInventoryReturn {
+export function useTodayInventory(): UseTodayInventoryReturn {
   const [todayInventory, setTodayInventory] = useState<InventoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,7 +33,7 @@ export function useTodayInventory(storeId: number): UseTodayInventoryReturn {
       setLoading(true);
       setError(null);
 
-      const todayInv: InventoryItem[] = await getTodayInventory(storeId);
+      const todayInv: InventoryItem[] = await getTodayInventory();
 
       setTodayInventory(todayInv);
     } catch (err) {
@@ -43,7 +43,7 @@ export function useTodayInventory(storeId: number): UseTodayInventoryReturn {
     } finally {
       setLoading(false);
     }
-  }, [storeId]);
+  }, []);
 
   useEffect(() => {
     fetchTodayInventory();

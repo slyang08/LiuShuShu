@@ -8,7 +8,7 @@ interface Props {
 
 async function getAllVarieties() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/varieties`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/varieties`, {
       cache: "no-store",
     });
 
@@ -30,7 +30,7 @@ export default async function Page({ params }: Props) {
 
   // Simultaneously obtain inventory + item list
   const [inventory, allVarieties] = await Promise.all([
-    getInventoryByDate(1, dateObj),
+    getInventoryByDate(dateObj),
     getAllVarieties(),
   ]);
 

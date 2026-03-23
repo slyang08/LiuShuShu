@@ -3,12 +3,8 @@
 
 import { useTodayInventory } from "../hooks/useTodayInventory";
 
-interface Props {
-  storeId: number;
-}
-
-export default function DurianList({ storeId }: Props) {
-  const { todayInventory, loading, error } = useTodayInventory(storeId);
+export default function DurianList() {
+  const { todayInventory, loading, error } = useTodayInventory();
 
   if (loading) return <div className="py-8 text-center">載入中...</div>;
   if (error) return <div className="py-8 text-center text-red-500">{error}</div>;

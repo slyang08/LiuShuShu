@@ -1,14 +1,16 @@
-import { LoginInput } from "@liushushu/shared/src/auth/types";
+import { LoginInput, RegisterInput } from "@liushushu/shared/src/auth/types";
 import * as authService from "../services/authService";
 import { Request, Response } from "express";
+
+export const getMe = async (req: Request, res: Response) => {
+  res.json(req.admin);
+};
 
 export const login = async (req: Request<unknown, unknown, LoginInput>, res: Response) => {
   try {
     const { email, password } = req.body;
 
     const token = await authService.login(email, password);
-
-    res.json({ token });
 
     res.cookie("access_token", token, {
       httpOnly: true,
@@ -17,8 +19,45 @@ export const login = async (req: Request<unknown, unknown, LoginInput>, res: Res
       maxAge: 24 * 60 * 60 * 1000,
     });
 
-    res.json({ message: "Logged in" });
+    res.json({
+      message: "Logged in successfully",
+      token,
+      admin: { email },
+    });
   } catch {
     res.status(401).json({ message: "Invalid credentials" });
+  }
+};
+
+export const register = async (req: Request<unknown, unknown, RegisterInput>, res: Response) => {
+  try {
+    const { email, username, password, storeId } = req.body;
+
+    // Basic validation to ensure required fields are present
+    if (!email || !password || !storeId) {
+      return res.status(400).json({ message: "Email, password and storeId are required" });
+    }
+
+    const token = await authService.register({ email, password, storeId });
+
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    res.json({
+      message: "Admin registered successfully",
+      token,
+      admin: {
+        // Can return additional admin information (excluding the password)
+        id: req.body.email,
+        email: req.body.email,
+      },
+    });
+  } catch (error: any) {
+    console.error("Register error:", error);
+    res.status(400).json({ message: error.message || "Registration failed" });
   }
 };

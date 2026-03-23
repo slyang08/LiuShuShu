@@ -9,6 +9,8 @@ export async function getVarieties(): Promise<Variety[]> {
   });
 
   if (!res.ok) {
+    const error = await res.json();
+    console.error("CREATE INVENTORY ERROR:", error);
     throw new Error("Failed to fetch varieties");
   }
 
