@@ -1,6 +1,7 @@
 // packages/shared/src/auth/types.ts
 export interface JwtPayload {
-  adminId: Number;
+  adminId: number;
+  storeId: number;
   role: string;
 }
 
@@ -9,6 +10,9 @@ export interface LoginInput {
   password: string;
 }
 
-export interface AuthenticatedRequest extends Express.Request {
-  admin?: JwtPayload;
+export interface RegisterInput {
+  email: string;
+  username?: string;
+  password: string;
+  storeId: number;
 }

@@ -1,7 +1,31 @@
 // apps/web/src/app/admin/layout.tsx
+"use client";
+
+import { getMe } from "@/features/auth/api";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
+
+  useEffect(() => {
+    getMe()
+      .then(() => setAuthenticated(true))
+      .catch(() => {
+        setAuthenticated(false);
+        router.replace("/admin");
+      })
+      .finally(() => setLoading(false));
+  }, [router]);
+
+  if (loading) return <p>Loading...</p>;
+  // if (!authenticated) return null;
+
+  // return <>{children}</>;
+
   return (
     <div className="flex min-h-screen overflow-hidden">
       <aside className="flex w-[33%] border-r border-blue-200 bg-linear-to-b from-blue-500 to-blue-600 px-4 py-6 shadow-lg">

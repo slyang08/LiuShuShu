@@ -1,6 +1,7 @@
 // apps/web/src/app/admin/page.tsx
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 export default function LoginPage() {
@@ -21,10 +22,22 @@ export default function LoginPage() {
   };
 
   return (
-    <div>
-      <input placeholder="email" type="text" onChange={(e) => setEmail(e.target.value)} />
-      <input placeholder="password" type="password" onChange={(e) => setPassword(e.target.value)} />
-      <button onClick={handleLogin}>Login</button>
-    </div>
+    <>
+      <div className="mt-[20vh] flex flex-col items-center space-y-4">
+        <input
+          className="rounded-md border-2 p-2"
+          placeholder="email"
+          type="text"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          className="rounded-md border-2 p-2"
+          placeholder="password"
+          type="password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Button onClick={handleLogin}>Login</Button>
+      </div>
+    </>
   );
 }

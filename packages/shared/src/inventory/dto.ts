@@ -6,7 +6,6 @@ export interface CreateInventoryItemDTO {
 }
 
 export interface CreateInventoryDTO {
-  storeId: number;
   date: string; // YYYY-MM-DD
   items: CreateInventoryItemDTO[];
 }

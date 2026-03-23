@@ -22,29 +22,26 @@ export async function createInventory(data: CreateInventoryDTO) {
   return res.json();
 }
 
-export async function getInventories(storeId: number) {
-  const res = await fetch(`${BASE_URL}/admin/inventories/${storeId}`, {
+export async function getInventories() {
+  const res = await fetch(`${BASE_URL}/admin/inventories`, {
     cache: "no-store",
   });
   if (!res.ok) throw new Error("Failed to fetch inventories");
   return res.json();
 }
 
-export async function getTodayInventory(storeId: number): Promise<InventoryItem[]> {
-  const res = await fetch(`${BASE_URL}/admin/inventories/${storeId}/today`, {
+export async function getTodayInventory(): Promise<InventoryItem[]> {
+  const res = await fetch(`${BASE_URL}/admin/inventories/today`, {
     cache: "no-store",
   });
   if (!res.ok) throw new Error("今日庫存載入失敗");
   return res.json();
 }
 
-export async function getInventoryByDate(storeId: number, date: Date) {
-  const res = await fetch(
-    `${BASE_URL}/admin/inventories/${storeId}/${date.toISOString().split("T")[0]}`,
-    {
-      cache: "no-store",
-    }
-  );
+export async function getInventoryByDate(date: Date) {
+  const res = await fetch(`${BASE_URL}/admin/inventories/${date.toISOString().split("T")[0]}`, {
+    cache: "no-store",
+  });
   if (!res.ok) throw new Error("Failed to fetch inventory");
   return res.json();
 }
