@@ -1,20 +1,15 @@
-// apps/web/src/app/durians/page.tsx
-import { InventoryItem } from "@/features/inventory/hooks/useTodayInventory";
+// apps/web/src/app/durians/[storeId]/page.tsx
+import { getPublicTodayInventory } from "@/features/inventory/api";
+import { InventoryItem } from "@liushushu/shared/inventory/types";
 import Link from "next/link";
 
-async function getTodayInventory(storeId: number): Promise<InventoryItem[]> {
-  const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
-  const res = await fetch(`${BASE_URL}/inventories/${storeId}/today`, {
-    cache: "no-store",
-  });
+type Props = {
+  params: { storeId: string };
+};
 
-  if (!res.ok) return [];
-  const inventory = await res.json();
-  return Array.isArray(inventory) ? inventory : [];
-}
-
-export default async function DuriansPage() {
-  const todayInventory = await getTodayInventory(1);
+export default async function DuriansPage({ params }: Props) {
+  const { storeId } = await params;
+  const todayInventory = await getPublicTodayInventory(Number(storeId));
 
   const penangDate = new Date().toLocaleDateString("sv", {
     timeZone: "Asia/Kuala_Lumpur",

@@ -1,27 +1,7 @@
 // src/features/inventory/hooks/useTodayInventory.ts
-import { DurianVariety } from "@liushushu/shared";
+import { InventoryItem, UseTodayInventoryReturn } from "@liushushu/shared/inventory/types";
 import { useCallback, useEffect, useState } from "react";
-import { getTodayInventory } from "../api";
-
-export interface InventoryItem {
-  id: number;
-  quantity: number;
-  price: number;
-  variety: DurianVariety;
-}
-
-export interface Inventory {
-  id: number;
-  date: string;
-  items: InventoryItem[];
-}
-
-interface UseTodayInventoryReturn {
-  todayInventory: InventoryItem[];
-  loading: boolean;
-  error: string | null;
-  refetch: () => Promise<void>;
-}
+import { getAdminTodayInventory } from "../api";
 
 export function useTodayInventory(): UseTodayInventoryReturn {
   const [todayInventory, setTodayInventory] = useState<InventoryItem[]>([]);
@@ -33,7 +13,7 @@ export function useTodayInventory(): UseTodayInventoryReturn {
       setLoading(true);
       setError(null);
 
-      const todayInv: InventoryItem[] = await getTodayInventory();
+      const todayInv: InventoryItem[] = await getAdminTodayInventory();
 
       setTodayInventory(todayInv);
     } catch (err) {

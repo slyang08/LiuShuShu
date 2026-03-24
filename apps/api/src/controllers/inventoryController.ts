@@ -58,7 +58,7 @@ export async function getInventoryByDate(req: Request, res: Response, next: Next
   }
 }
 
-export async function getTodayInventory(req: Request, res: Response, next: NextFunction) {
+export async function getPublicTodayInventory(req: Request, res: Response, next: NextFunction) {
   try {
     const storeId = req.admin?.storeId;
 
@@ -66,7 +66,7 @@ export async function getTodayInventory(req: Request, res: Response, next: NextF
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const items = await inventoryService.getTodayInventory(storeId);
+    const items = await inventoryService.getPublicTodayInventory(storeId);
     res.json(items);
   } catch (error) {
     next(error);

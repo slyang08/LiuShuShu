@@ -2,23 +2,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { DurianVariety } from "@liushushu/shared";
+import { Inventory } from "@liushushu/shared/inventory/types";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getInventories } from "../api";
-
-interface InventoryItem {
-  id: number;
-  quantity: number;
-  price: number;
-  variety: DurianVariety;
-}
-
-interface Inventory {
-  id: number;
-  date: string;
-  items: InventoryItem[];
-}
+import { getInventories, getInventoryByDate } from "../api";
 
 const today = new Date().toLocaleDateString("sv", {
   timeZone: "Asia/Kuala_Lumpur",
@@ -57,8 +44,19 @@ export default function InventoryList() {
   const [selectedDate, setSelectedDate] = useState<string>("");
 
   useEffect(() => {
-    getInventories().then(setInventories).catch(console.error);
-  }, []);
+    if (selectedDate) {
+      getInventoryByDate(new Date(selectedDate))
+        // Get data and put into list by the date
+        .then((inv) => setInventories([inv]))
+        .catch((err) => {
+          console.error("Failed to fetch inventory for date:", err);
+          // No date on the date, then make it empty
+          setInventories([]);
+        });
+    } else {
+      getInventories().then(setInventories).catch(console.error);
+    }
+  }, [selectedDate]);
 
   const filteredInventories = selectedDate
     ? inventories.filter((inv) => inv.date.startsWith(selectedDate))

@@ -8,7 +8,7 @@ const router: Router = Router();
 router.post("/", requireAuth, inventoryController.createInventory);
 router.put("/", requireAuth, inventoryController.updateInventory);
 router.get("/", inventoryController.getAllInventory);
-router.get("/today", inventoryController.getTodayInventory);
+router.get("/:storeId/today", inventoryController.getPublicTodayInventory);
 router.get("/:date", inventoryController.getInventoryByDate);
 
 export default router;

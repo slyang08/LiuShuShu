@@ -82,7 +82,7 @@ export async function getInventoryByDate(storeId: number, date: Date) {
   });
 }
 
-export async function getTodayInventory(storeId: number) {
+export async function getPublicTodayInventory(storeId: number) {
   const today = getTodayStoreDate("Asia/Kuala_Lumpur");
 
   const inventory = await prisma.inventory.findUnique({
