@@ -61,3 +61,14 @@ export const register = async (req: Request<unknown, unknown, RegisterInput>, re
     res.status(400).json({ message: error.message || "Registration failed" });
   }
 };
+
+export const logout = (req: Request, res: Response) => {
+  // Clean ACCESS_TOKEN from cookie
+  res.clearCookie("access_token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+  });
+
+  return res.json({ message: "Logged out" });
+};
