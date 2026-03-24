@@ -9,7 +9,7 @@ export default function Home() {
       <p className="text-gray-600">新鮮榴蓮每日更新中</p>
 
       <div className="flex gap-4">
-        <Link href="/durians" className="rounded-lg border px-4 py-2">
+        <Link href="/durians/1" className="rounded-lg border px-4 py-2">
           今日榴蓮
         </Link>
 

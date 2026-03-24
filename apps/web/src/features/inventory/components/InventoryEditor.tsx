@@ -66,7 +66,6 @@ export default function InventoryEditor({ inventory, varieties }: Props) {
     }
 
     const payload: CreateInventoryDTO = {
-      storeId: inventory.storeId,
       date: inventory.date.split("T")[0], // "20XX-XX-XX"
       items: items.filter((item) => item.quantity > 0), // Only save the items which have qualities
     };
@@ -74,8 +73,9 @@ export default function InventoryEditor({ inventory, varieties }: Props) {
     try {
       setLoading(true);
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/inventories`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/inventories`, {
         method: "PUT",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });

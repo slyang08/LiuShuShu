@@ -1,13 +1,14 @@
 // apps/api/src/routes/inventoryRoutes.ts
 import * as inventoryController from "../controllers/inventoryController";
+import { requireAuth } from "../middlewares/authMiddleware";
 import { Router } from "express";
 
 const router: Router = Router();
 
-router.post("/", inventoryController.createInventory);
-router.put("/", inventoryController.updateInventory);
-router.get("/:storeId", inventoryController.getAllInventory);
-router.get("/:storeId/today", inventoryController.getTodayInventory);
-router.get("/:storeId/:date", inventoryController.getInventoryByDate);
+router.post("/", requireAuth, inventoryController.createInventory);
+router.put("/", requireAuth, inventoryController.updateInventory);
+router.get("/", inventoryController.getAllInventory);
+router.get("/:storeId/today", inventoryController.getPublicTodayInventory);
+router.get("/:date", inventoryController.getInventoryByDate);
 
 export default router;

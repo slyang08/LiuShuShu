@@ -1,12 +1,11 @@
 // apps/web/src/features/inventory/api.ts
 import { CreateInventoryDTO } from "@liushushu/shared";
-import { InventoryItem } from "./hooks/useTodayInventory";
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+import { InventoryItem } from "@liushushu/shared/inventory/types";
 
 export async function createInventory(data: CreateInventoryDTO) {
-  const res = await fetch(`${BASE_URL}/inventories`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/inventories`, {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -21,25 +20,40 @@ export async function createInventory(data: CreateInventoryDTO) {
   return res.json();
 }
 
-export async function getInventories(storeId: number) {
-  const res = await fetch(`${BASE_URL}/inventories/${storeId}`, {
+export async function getInventories() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/inventories`, {
     cache: "no-store",
   });
   if (!res.ok) throw new Error("Failed to fetch inventories");
   return res.json();
 }
 
-export async function getTodayInventory(storeId: number): Promise<InventoryItem[]> {
-  const res = await fetch(`${BASE_URL}/inventories/${storeId}/today`, {
+export async function getAdminTodayInventory(): Promise<InventoryItem[]> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/inventories/today`, {
     cache: "no-store",
   });
   if (!res.ok) throw new Error("今日庫存載入失敗");
   return res.json();
 }
 
-export async function getInventoryByDate(storeId: number, date: Date) {
+export async function getPublicTodayInventory(storeId: number): Promise<InventoryItem[]> {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/inventories/${storeId}/today`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) return [];
+    const inventory = await res.json();
+    return Array.isArray(inventory) ? inventory : [];
+  } catch (err) {
+    console.error("Public inventory error:", err);
+    return [];
+  }
+}
+
+export async function getInventoryByDate(date: Date) {
   const res = await fetch(
-    `${BASE_URL}/inventories/${storeId}/${date.toISOString().split("T")[0]}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/admin/inventories/${date.toISOString().split("T")[0]}`,
     {
       cache: "no-store",
     }
@@ -52,8 +66,9 @@ export async function updateInventoryItem(
   itemId: number,
   data: { quantity: number; price: number }
 ) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/inventory-items/${itemId}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/inventory-items/${itemId}`, {
     method: "PATCH",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },

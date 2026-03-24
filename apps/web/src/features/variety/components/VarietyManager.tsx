@@ -2,8 +2,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { Variety } from "../../../../../../packages/shared/src/variety/types";
 import { createVariety, deleteVariety, getVarieties, updateVariety } from "../api";
-import type { Variety } from "../types";
 import VarietyForm from "./VarietyForm";
 import VarietyList from "./VarietyList";
 
@@ -39,7 +39,7 @@ export default function VarietyManager() {
   return (
     <div className="space-y-6">
       <VarietyForm
-        key={editing?.id ?? "create"} // 切換編輯時重置表單
+        key={editing?.id ?? "create"} // Reset the form when switching to edit mode
         initialValue={editing}
         onCreate={handleCreate}
         onUpdate={handleUpdate}

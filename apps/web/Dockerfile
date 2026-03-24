@@ -1,4 +1,4 @@
-# ---------- Build stage ----------
+# ---------- base ----------
 FROM node:20-alpine AS builder
 
 WORKDIR /app
@@ -37,12 +37,14 @@ ENV HOSTNAME=0.0.0.0
 # Copy build stage and export necessary files for runtime
 COPY --from=builder /app/apps/web/.next/standalone ./
 
-# Starts server.js
+# Jump the director which has server.js
 WORKDIR /app/apps/web
+
 # Copy static assets and public files
 COPY --from=builder /app/apps/web/.next/static ./.next/static
 COPY --from=builder /app/apps/web/public ./public
 
+ENV NODE_ENV=production PORT=3000 HOSTNAME="0.0.0.0"
 EXPOSE 3000
 
 # Starts the Next.js server
