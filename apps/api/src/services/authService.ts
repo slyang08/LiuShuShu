@@ -11,7 +11,11 @@ export async function login(email: string, password: string): Promise<string> {
 
   if (!admin) throw new Error("Invalid credentials");
 
+  console.log("input password:", password);
+  console.log("hash:", admin.password);
+
   const isValid = await bcrypt.compare(password, admin.password);
+  console.log("isValid:", isValid);
 
   if (!isValid) throw new Error("Invalid credentials");
 

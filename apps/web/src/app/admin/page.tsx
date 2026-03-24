@@ -2,6 +2,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { login } from "@/features/auth/api";
 import { useState } from "react";
 
 export default function LoginPage() {
@@ -9,16 +10,13 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({ email, password }),
-    });
-
-    window.location.href = "/admin/inventories";
+    try {
+      await login(email, password);
+      window.location.href = "/admin/inventories";
+    } catch (err) {
+      alert((err as Error).message);
+      return;
+    }
   };
 
   return (

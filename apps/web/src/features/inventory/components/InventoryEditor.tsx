@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { CreateInventoryDTO, CreateInventoryItemDTO } from "@liushushu/shared";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { updateInventory } from "../api";
 import { Trash2 } from "lucide-react";
 
 interface Props {
@@ -72,18 +73,7 @@ export default function InventoryEditor({ inventory, varieties }: Props) {
 
     try {
       setLoading(true);
-
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/inventories`, {
-        method: "PUT",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
-
+      updateInventory(payload);
       alert("💾 Inventory update successfully!");
       router.refresh();
       router.back();

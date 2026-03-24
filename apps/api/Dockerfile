@@ -5,17 +5,23 @@ WORKDIR /app
 RUN apk add --no-cache tini
 RUN corepack enable && corepack prepare pnpm@10.1.0 --activate
 
-COPY . .
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
+COPY apps/api/package.json ./apps/api/
+COPY packages/shared/package.json ./packages/shared/
 
 RUN pnpm install --frozen-lockfile
-ENV DATABASE_URL="file:./dev.db"
-RUN cd apps/api && npx prisma generate
-RUN pnpm --filter ./apps/api... build
+
+COPY apps/api ./apps/api
+COPY packages/shared ./packages/shared
+COPY apps/api/prisma ./apps/api/prisma
+
+WORKDIR /app/apps/api
+RUN npx prisma generate
+RUN pnpm build
 
 ENV NODE_ENV=production
 
-WORKDIR /app/apps/api
-
 EXPOSE 8080
+
 ENTRYPOINT ["tini", "--"]
 CMD ["node", "dist/index.js"]
