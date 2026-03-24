@@ -8,6 +8,7 @@ RUN corepack enable && corepack prepare pnpm@10.1.0 --activate
 COPY . .
 
 RUN pnpm install --frozen-lockfile
+ENV DATABASE_URL="file:./dev.db"
 RUN cd apps/api && npx prisma generate
 RUN pnpm --filter ./apps/api... build
 
