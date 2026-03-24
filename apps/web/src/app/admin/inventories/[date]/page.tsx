@@ -1,26 +1,10 @@
 // apps/web/src/app/admin/inventories/[date]/page.tsx
 import { getInventoryByDate } from "@/features/inventory/api";
 import InventoryEditor from "@/features/inventory/components/InventoryEditor";
+import { getVarieties } from "@/features/variety/api";
 
 interface Props {
   params: Promise<{ date: string }>;
-}
-
-async function getAllVarieties() {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/varieties`, {
-      cache: "no-store",
-    });
-
-    if (!res.ok) {
-      console.warn("❌ Varieties API 404:", res.url, res.status);
-      return []; // ✅ Returns an empty array, and the page displays normally
-    }
-    return await res.json();
-  } catch (error) {
-    console.error("❌ Varieties fetch failed:", error);
-    return []; // ✅ No matter any error returns an empty array
-  }
 }
 
 export default async function Page({ params }: Props) {
@@ -31,7 +15,7 @@ export default async function Page({ params }: Props) {
   // Simultaneously obtain inventory + item list
   const [inventory, allVarieties] = await Promise.all([
     getInventoryByDate(dateObj),
-    getAllVarieties(),
+    getVarieties(),
   ]);
 
   if (!inventory) {
