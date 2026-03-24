@@ -22,9 +22,11 @@ export default async function DuriansPage() {
 
   if (!todayInventory.length) {
     return (
-      <div className="p-6 py-12 text-center text-gray-500">
-        <p>今日 {penangDate} 榴蓮暫無進貨或已賣光 😢</p>
-        <p className="mt-2 text-sm">請明天再來看看新鮮的榴蓮哦！</p>
+      <div className="min-h-screen">
+        <div className="h-[20vh] p-6 py-12 text-center text-gray-500">
+          <p>今日 {penangDate} 榴蓮暫無進貨或已賣光 😢</p>
+          <p className="mt-2 text-sm">請明天再來看看新鮮的榴蓮哦！</p>
+        </div>
       </div>
     );
   }
