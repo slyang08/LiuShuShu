@@ -33,6 +33,7 @@ export const login = async (req: Request<unknown, unknown, LoginInput>, res: Res
       message: "Logged in successfully",
       token,
       admin: { email },
+      redirectUrl: `${process.env.FRONTEND_URL}/admin/inventories`,
     });
   } catch {
     res.status(401).json({ message: "Invalid credentials" });

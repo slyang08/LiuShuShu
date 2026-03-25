@@ -14,7 +14,7 @@ export function middleware(req: NextRequest) {
     }
   }
 
-  // 已登入，訪問 /admin → 跳到 /admin/inventories
+  // Logged in, access from /admin to /admin/inventories
   if (accessToken && pathname === "/admin") {
     // logged in, to /admin/inventories
     return NextResponse.redirect(new URL("/admin/inventories", req.url));
@@ -23,7 +23,7 @@ export function middleware(req: NextRequest) {
   return NextResponse.next();
 }
 
-// 只攔截 /admin 路由
+// Intercept only the /admin route
 export const config = {
   matcher: "/admin/:path*",
 };

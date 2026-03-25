@@ -4,17 +4,15 @@
 import { Button } from "@/components/ui/button";
 import { login } from "@/features/auth/api";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
     try {
-      await login(email, password);
-      router.push("/admin/inventories");
+      const data = await login(email, password);
+      window.location.href = data.redirectUrl || "/admin/inventories";
     } catch (err) {
       alert((err as Error).message);
       return;
