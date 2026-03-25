@@ -1,5 +1,5 @@
 # ---------- base ----------
-FROM node:20-alpine AS base
+FROM node:20-alpine AS builder
 WORKDIR /app
 
 RUN apk add --no-cache tini
@@ -16,6 +16,10 @@ COPY packages/shared ./packages/shared
 COPY apps/api/prisma ./apps/api/prisma
 
 WORKDIR /app/apps/api
+
+ARG DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres
+ENV DATABASE_URL=${DATABASE_URL}
+
 RUN npx prisma generate
 RUN pnpm build
 
