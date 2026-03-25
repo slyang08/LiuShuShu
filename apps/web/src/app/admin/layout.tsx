@@ -14,8 +14,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   useEffect(() => {
     getMe()
-      .then((user) => {
-        console.log("✅ Auth success:", user);
+      .then((admin) => {
+        console.log("✅ Auth success:", admin);
         setAuthenticated(true);
       })
       .catch((error) => {
