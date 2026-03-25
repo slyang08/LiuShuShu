@@ -1,5 +1,5 @@
 // apps/api/src/controllers/healthController.ts
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../lib/prisma";
 import { Request, Response } from "express";
 
 interface HealthStatus {
@@ -13,8 +13,6 @@ interface HealthResponse {
   timestamp: string;
   services: HealthStatus;
 }
-
-const prisma = new PrismaClient();
 
 export const healthCheck = async (req: Request, res: Response) => {
   const health: HealthResponse = {
