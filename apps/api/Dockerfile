@@ -17,8 +17,8 @@ COPY apps/api/prisma ./apps/api/prisma
 
 WORKDIR /app/apps/api
 
-ARG DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres
-ENV DATABASE_URL=${DATABASE_URL}
+ARG DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
 
 RUN npx prisma generate
 RUN pnpm build

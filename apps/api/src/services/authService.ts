@@ -22,6 +22,7 @@ export async function login(email: string, password: string): Promise<string> {
   const payload: JwtPayload = {
     adminId: admin.id,
     storeId: admin.storeId,
+    email: admin.email,
     role: admin.role,
   };
 
@@ -73,6 +74,7 @@ export async function register(data: RegisterInput): Promise<string> {
   const payload: JwtPayload = {
     adminId: admin.id,
     storeId: admin.storeId,
+    email: admin.email,
     role: admin.role,
   };
 

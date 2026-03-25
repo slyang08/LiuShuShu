@@ -43,6 +43,7 @@ jobs:
         run: |
           docker build \
             --platform=linux/amd64 \
+            --build-arg NEXT_PUBLIC_API_URL=https://liushushu-api-latest.onrender.com \
             -f apps/web/Dockerfile \
             -t ${{ env.DOCKER_USERNAME }}/liushushu-web:${{ github.sha }} \
             .

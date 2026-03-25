@@ -10,6 +10,10 @@ RUN apk add --no-cache dumb-init && corepack enable
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 COPY apps/web/package.json ./apps/web/
 COPY packages ./packages
+
+ARG NEXT_PUBLIC_API_URL=https://liushushu-api-latest.onrender.com
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+
 # Copy source
 COPY apps/web ./apps/web
 
@@ -31,6 +35,7 @@ RUN apk add --no-cache dumb-init
 
 # Set up environment variables
 ENV NODE_ENV=production
+ENV NEXT_PUBLIC_API_URL=https://liushushu-api-latest.onrendner.com
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
@@ -43,9 +48,6 @@ WORKDIR /app/apps/web
 # Copy static assets and public files
 COPY --from=builder /app/apps/web/.next/static ./.next/static
 COPY --from=builder /app/apps/web/public ./public
-
-ENV NODE_ENV=production PORT=3000 HOSTNAME="0.0.0.0"
-EXPOSE 3000
 
 # Starts the Next.js server
 CMD ["dumb-init", "node", "server.js"]

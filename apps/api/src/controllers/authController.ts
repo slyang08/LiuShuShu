@@ -4,7 +4,16 @@ import * as authService from "../services/authService";
 import { Request, Response } from "express";
 
 export const getMe = async (req: Request, res: Response) => {
-  res.json(req.admin);
+  if (!req.admin) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  res.json({
+    adminId: req.admin.adminId,
+    storeId: req.admin.storeId,
+    email: req.admin.email,
+    role: req.admin.role,
+  });
 };
 
 export const login = async (req: Request<unknown, unknown, LoginInput>, res: Response) => {

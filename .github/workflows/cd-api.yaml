@@ -13,6 +13,7 @@ env:
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
   RENDER_API_DEPLOY_HOOK: ${{ secrets.RENDER_API_DEPLOY_HOOK_URL }}
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
 jobs:
   build-and-deploy-api:
@@ -43,6 +44,7 @@ jobs:
         run: |
           docker build \
             --platform=linux/amd64 \
+            --build-arg DATABASE_URL="$DATABASE_URL" \
             -f apps/api/Dockerfile \
             -t ${{ env.DOCKER_USERNAME }}/liushushu-api:${{ github.sha }} \
             .
