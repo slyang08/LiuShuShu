@@ -1,6 +1,6 @@
 // apps/web/src/features/auth/api.ts
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
 
 export async function getMe() {
   const res = await fetch(`${API_URL}/admin/auth/me`, {
