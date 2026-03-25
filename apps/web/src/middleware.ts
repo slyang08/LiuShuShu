@@ -3,19 +3,21 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const accessToken = req.cookies.get("access_token")?.value || null;
-  const url = req.nextUrl.clone();
+  const accessToken = req.cookies.get("access_token")?.value;
+  const { pathname } = req.nextUrl;
 
-  // 沒登入，訪問 /admin/* → 跳回登入
-  if (!accessToken && url.pathname.startsWith("/admin") && url.pathname !== "/admin") {
-    url.pathname = "/admin";
-    return NextResponse.redirect(url);
+  // Not logged in, if accesses /admin/* all jump to /admin/login
+  if (pathname.startsWith("/admin/") && pathname !== "/admin/login") {
+    if (!accessToken) {
+      // yet login, to /admin/login
+      return NextResponse.redirect(new URL("/admin/login", req.url));
+    }
   }
 
   // 已登入，訪問 /admin → 跳到 /admin/inventories
-  if (accessToken && url.pathname === "/admin") {
-    url.pathname = "/admin/inventories";
-    return NextResponse.redirect(url);
+  if (accessToken && pathname === "/admin") {
+    // logged in, to /admin/inventories
+    return NextResponse.redirect(new URL("/admin/inventories", req.url));
   }
 
   return NextResponse.next();
