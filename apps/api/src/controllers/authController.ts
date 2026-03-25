@@ -23,9 +23,10 @@ export const login = async (req: Request<unknown, unknown, LoginInput>, res: Res
     const token = await authService.login(email, password);
 
     res.cookie("access_token", token, {
+      path: "/",
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.FRONTEND_URL !== "http://localhost:3000" ? "none" : "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000,
     });
 
