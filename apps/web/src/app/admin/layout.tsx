@@ -21,7 +21,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       .catch((error) => {
         console.error("❌ Auth failed:", error);
         setAuthenticated(false);
-        router.replace("/admin");
+        router.replace("/admin/inventories");
       })
       .finally(() => {
         console.log("✅ Loading complete");
