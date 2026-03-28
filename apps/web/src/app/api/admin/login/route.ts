@@ -11,14 +11,16 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify(body),
     });
 
-    if (!apiRes.ok) {
-      const error = await apiRes.json();
-      return NextResponse.json(error, { status: apiRes.status });
-    }
-
     const data = await apiRes.json();
 
+    if (!apiRes.ok) {
+      return NextResponse.json(data, { status: apiRes.status });
+    }
+
     const response = NextResponse.json(data);
+    if (!data.token) {
+      return NextResponse.json({ message: "No token returned from API" }, { status: 500 });
+    }
 
     response.cookies.set("access_token", data.token, {
       httpOnly: true,
