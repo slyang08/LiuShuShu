@@ -22,6 +22,7 @@ export default function LoginPage() {
 
     try {
       await login(email, password);
+      window.location.href = "/admin/inventories";
     } catch (err) {
       alert((err as Error).message);
       return;

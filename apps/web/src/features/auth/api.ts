@@ -3,7 +3,7 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function getMe() {
-  const res = await fetch(`${API_URL}/admin/auth/me`, {
+  const res = await fetch(`/api/admin/me`, {
     method: "GET",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
@@ -14,12 +14,11 @@ export async function getMe() {
 }
 
 export async function login(email: string, password: string) {
-  const res = await fetch(`${API_URL}/admin/auth/login`, {
+  const res = await fetch(`/api/admin/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    credentials: "include",
     body: JSON.stringify({ email, password }),
   });
 

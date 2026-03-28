@@ -7,7 +7,7 @@ export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Not logged in, if accesses /admin/* all jump to /admin/login
-  if (pathname.startsWith("/admin/") && pathname !== "/admin/login") {
+  if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
     if (!accessToken) {
       // yet login, to /admin/login
       return NextResponse.redirect(new URL("/admin/login", req.url));
