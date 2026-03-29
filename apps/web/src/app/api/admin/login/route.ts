@@ -5,23 +5,46 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+
     const apiRes = await fetch("https://liushushu-api-latest.onrender.com/admin/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
+      signal: controller.signal,
     });
 
-    const data = await apiRes.json();
+    clearTimeout(timeout);
+
+    console.log("POST /admin/login body:", body);
+    console.log("apiRes.status:", apiRes.status);
+
+    const text = await apiRes.text();
+    console.log("RAW RESPONSE:", text);
+
+    let data;
+    try {
+      // data = await apiRes.json();
+      data = JSON.parse(text);
+    } catch {
+      return NextResponse.json(
+        { message: `External API returned non-JSON response (${apiRes.status})` },
+        { status: 500 }
+      );
+    }
 
     if (!apiRes.ok) {
+      console.log("External API login error:", data);
       return NextResponse.json(data, { status: apiRes.status });
     }
 
-    const response = NextResponse.json(data);
     if (!data.token) {
-      return NextResponse.json({ message: "No token returned from API" }, { status: 500 });
+      console.error("No token returned from external API:", data);
+      return NextResponse.json({ message: "No token returned from external API" }, { status: 500 });
     }
 
+    const response = NextResponse.json(data);
     response.cookies.set("access_token", data.token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -32,6 +55,7 @@ export async function POST(req: NextRequest) {
 
     return response;
   } catch (error) {
+    console.error("Next.js login error:", error);
     return NextResponse.json({ message: "Internal server error" }, { status: 500 });
   }
 }
