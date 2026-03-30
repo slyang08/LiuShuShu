@@ -1,7 +1,5 @@
 // apps/web/src/features/auth/api.ts
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
 export async function getMe() {
   const res = await fetch(`/api/admin/me`, {
     method: "GET",
@@ -31,8 +29,13 @@ export async function login(email: string, password: string) {
 }
 
 export async function logout() {
-  await fetch(`${API_URL}/admin/auth/logout`, {
-    method: "POST",
-    credentials: "include",
-  });
+  try {
+    const res = await fetch(`/api/admin/logout`, {
+      method: "POST",
+    });
+
+    if (!res.ok) throw new Error("Logout failed");
+  } catch (error) {
+    console.error("Logout error:", error);
+  }
 }

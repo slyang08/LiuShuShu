@@ -14,19 +14,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   useEffect(() => {
     getMe()
-      .then((admin) => {
-        console.log("✅ Auth success:", admin);
-        setAuthenticated(true);
-      })
+      .then(setAuthenticated)
       .catch((error) => {
         console.error("❌ Auth failed:", error);
-        setAuthenticated(false);
-        router.replace("/admin/inventories");
+        router.replace("/admin/login");
       })
-      .finally(() => {
-        console.log("✅ Loading complete");
-        setLoading(false);
-      });
+      .finally(() => setLoading(false));
   }, [router]);
 
   if (loading) return <p>Loading...</p>;

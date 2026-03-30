@@ -19,10 +19,14 @@ export function LogoutButton({
 
   const handleClick = () => {
     startTransition(async () => {
-      await logout();
-      router.push("/admin/login");
-      router.refresh();
-      onSuccess?.();
+      try {
+        await logout();
+        onSuccess?.();
+        router.replace("/admin/login");
+        router.refresh();
+      } catch (e) {
+        console.error(e);
+      }
     });
   };
 
