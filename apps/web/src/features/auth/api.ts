@@ -3,8 +3,6 @@
 export async function getMe() {
   const res = await fetch(`/api/admin/me`, {
     method: "GET",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
   });
 
   if (!res.ok) throw new Error("Failed to fetch user");

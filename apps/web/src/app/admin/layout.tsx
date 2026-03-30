@@ -14,13 +14,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   useEffect(() => {
     getMe()
-      .then(setAuthenticated)
+      .then(() => setAuthenticated(true))
       .catch((error) => {
         console.error("❌ Auth failed:", error);
-        router.replace("/admin/login");
+        setAuthenticated(false);
       })
       .finally(() => setLoading(false));
-  }, [router]);
+  }, []);
+
+  useEffect(() => {
+    if (!loading && !authenticated) {
+      router.replace("/admin/login");
+    }
+  }, [loading, authenticated, router]);
 
   if (loading) return <p>Loading...</p>;
 

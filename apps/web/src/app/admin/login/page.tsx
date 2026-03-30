@@ -4,8 +4,10 @@
 import { Button } from "@/components/ui/button";
 import { login } from "@/features/auth/api";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -22,7 +24,8 @@ export default function LoginPage() {
 
     try {
       await login(email, password);
-      window.location.href = "/admin/inventories";
+      router.replace("/admin/inventories");
+      router.refresh();
     } catch (err) {
       alert((err as Error).message);
       return;
