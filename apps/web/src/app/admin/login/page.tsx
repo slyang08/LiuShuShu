@@ -25,7 +25,8 @@ export default function LoginPage() {
       window.location.href = "/admin/inventories";
     } catch (err) {
       alert((err as Error).message);
-      return;
+    } finally {
+      setLoading(false);
     }
   };
 

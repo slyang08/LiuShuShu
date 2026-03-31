@@ -1,7 +1,5 @@
 // apps/web/src/features/auth/api.ts
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
 export async function getMe() {
   const res = await fetch(`/api/admin/me`, {
     method: "GET",
@@ -9,7 +7,7 @@ export async function getMe() {
     headers: { "Content-Type": "application/json" },
   });
 
-  if (!res.ok) throw new Error("Failed to fetch user");
+  if (!res.ok) throw new Error("Failed to fetch admin");
   return res.json();
 }
 
@@ -31,7 +29,7 @@ export async function login(email: string, password: string) {
 }
 
 export async function logout() {
-  await fetch(`${API_URL}/admin/auth/logout`, {
+  await fetch(`/api/admin/logout`, {
     method: "POST",
     credentials: "include",
   });

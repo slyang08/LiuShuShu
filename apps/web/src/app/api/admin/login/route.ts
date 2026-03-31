@@ -25,7 +25,6 @@ export async function POST(req: NextRequest) {
 
     let data;
     try {
-      // data = await apiRes.json();
       data = JSON.parse(text);
     } catch {
       return NextResponse.json(
