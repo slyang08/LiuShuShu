@@ -3,6 +3,7 @@
 
 import { LogoutButton } from "@/components/ui/button/logoutButton";
 import { getMe } from "@/features/auth/api";
+import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -11,6 +12,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
+  const logout = useLogout();
 
   useEffect(() => {
     getMe()
@@ -38,7 +40,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <Link href="/admin/inventories/create">建立庫存 Create Inventory</Link>
           <Link href="/admin/varieties">榴蓮品種 Varieties</Link>
           <Link href="/">榴蓮樹樹 Home</Link>
-          <LogoutButton className="ml-auto" />
+          <LogoutButton onClick={logout} className="ml-auto" />
         </nav>
       </aside>
 

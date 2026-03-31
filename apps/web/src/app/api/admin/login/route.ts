@@ -5,34 +5,16 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 8000);
-
     const apiRes = await fetch("https://liushushu-api-latest.onrender.com/admin/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
-      signal: controller.signal,
     });
-
-    clearTimeout(timeout);
 
     console.log("POST /admin/login body:", body);
     console.log("apiRes.status:", apiRes.status);
 
-    const text = await apiRes.text();
-    console.log("RAW RESPONSE:", text);
-
-    let data;
-    try {
-      // data = await apiRes.json();
-      data = JSON.parse(text);
-    } catch {
-      return NextResponse.json(
-        { message: `External API returned non-JSON response (${apiRes.status})` },
-        { status: 500 }
-      );
-    }
+    const data = await apiRes.json().catch(() => ({}));
 
     if (!apiRes.ok) {
       console.log("External API login error:", data);

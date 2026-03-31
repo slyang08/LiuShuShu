@@ -14,12 +14,6 @@ export function middleware(req: NextRequest) {
     }
   }
 
-  // Logged in, access from /admin to /admin/inventories
-  if (accessToken && pathname === "/admin") {
-    // logged in, to /admin/inventories
-    return NextResponse.redirect(new URL("/admin/inventories", req.url));
-  }
-
   return NextResponse.next();
 }
 

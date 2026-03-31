@@ -3,6 +3,7 @@
 export async function getMe() {
   const res = await fetch(`/api/admin/me`, {
     method: "GET",
+    credentials: "include",
   });
 
   if (!res.ok) throw new Error("Failed to fetch user");
@@ -15,25 +16,28 @@ export async function login(email: string, password: string) {
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
     body: JSON.stringify({ email, password }),
   });
 
+  const data = await res.json().catch(() => ({}));
+
   if (!res.ok) {
-    const error = await res.json().catch(() => ({}));
-    throw new Error(error.message || "Login failed");
+    throw new Error(data.message || "Login failed");
   }
 
-  return res.json();
+  return data;
 }
 
 export async function logout() {
   try {
-    const res = await fetch(`/api/admin/logout`, {
+    await fetch(`/api/admin/logout`, {
       method: "POST",
+      credentials: "include",
     });
-
-    if (!res.ok) throw new Error("Logout failed");
   } catch (error) {
     console.error("Logout error:", error);
+  } finally {
+    window.location.href = "/admin/login";
   }
 }
