@@ -2,39 +2,23 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { logout } from "@/features/auth/api";
 import { useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
 
 export function LogoutButton({
-  onSuccess,
+  onClick,
   className = "",
 }: {
-  onSuccess?: () => void;
+  onClick: () => void;
   className?: string;
 }) {
   const [isPending, startTransition] = useTransition();
-  const router = useRouter();
-
-  const handleClick = () => {
-    startTransition(async () => {
-      try {
-        await logout();
-        onSuccess?.();
-        router.replace("/admin/login");
-        router.refresh();
-      } catch (e) {
-        console.error(e);
-      }
-    });
-  };
 
   return (
     <Button
       variant="ghost"
       size="sm"
-      onClick={handleClick}
+      onClick={() => startTransition(onClick)}
       disabled={isPending}
       className={className}
     >
