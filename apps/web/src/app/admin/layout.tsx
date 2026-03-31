@@ -3,7 +3,6 @@
 
 import { LogoutButton } from "@/components/ui/button/logoutButton";
 import { getMe } from "@/features/auth/api";
-import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -12,7 +11,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
-  const logout = useLogout();
 
   useEffect(() => {
     getMe()
