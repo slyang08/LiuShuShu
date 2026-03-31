@@ -1,4 +1,5 @@
 // apps/web/src/app/api/admin/me/route.ts
+import { serverFetch } from "@/lib/serverFetch";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -11,14 +12,11 @@ export async function GET() {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const res = await fetch("https://liushushu-api-latest.onrender.com/admin/auth/me", {
+    const res = await serverFetch("https://liushushu-api-latest.onrender.com/admin/auth/me", {
       method: "GET",
-      headers: {
-        Cookie: `access_token=${token}`,
-      },
     });
 
-    const data = await res.json();
+    const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {
       return NextResponse.json(data, { status: res.status });
