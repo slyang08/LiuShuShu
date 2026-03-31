@@ -6,7 +6,7 @@ export async function getMe() {
     credentials: "include",
   });
 
-  if (!res.ok) throw new Error("Failed to fetch user");
+  if (!res.ok) throw new Error("Failed to fetch admin");
   return res.json();
 }
 

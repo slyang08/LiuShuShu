@@ -12,7 +12,6 @@ export function useLogout() {
       console.error(e);
     } finally {
       router.replace("/admin/login");
-      router.refresh();
     }
   };
 }

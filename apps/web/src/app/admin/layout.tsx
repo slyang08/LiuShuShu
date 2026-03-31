@@ -20,9 +20,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       .catch((error) => {
         console.error("❌ Auth failed:", error);
         setAuthenticated(false);
+        router.replace("/admin/login");
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     if (!loading && !authenticated) {
@@ -40,7 +41,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <Link href="/admin/inventories/create">建立庫存 Create Inventory</Link>
           <Link href="/admin/varieties">榴蓮品種 Varieties</Link>
           <Link href="/">榴蓮樹樹 Home</Link>
-          <LogoutButton onClick={logout} className="ml-auto" />
+          <LogoutButton className="ml-auto" />
         </nav>
       </aside>
 

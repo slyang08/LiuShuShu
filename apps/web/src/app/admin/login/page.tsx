@@ -28,7 +28,8 @@ export default function LoginPage() {
       router.refresh();
     } catch (err) {
       alert((err as Error).message);
-      return;
+    } finally {
+      setLoading(false);
     }
   };
 

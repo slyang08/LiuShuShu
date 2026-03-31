@@ -14,7 +14,18 @@ export async function POST(req: NextRequest) {
     console.log("POST /admin/login body:", body);
     console.log("apiRes.status:", apiRes.status);
 
-    const data = await apiRes.json().catch(() => ({}));
+    const text = await apiRes.text();
+    console.log("RAW RESPONSE:", text);
+
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      return NextResponse.json(
+        { message: `External API returned non-JSON response (${apiRes.status})` },
+        { status: 500 }
+      );
+    }
 
     if (!apiRes.ok) {
       console.log("External API login error:", data);
