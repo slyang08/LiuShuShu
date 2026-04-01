@@ -48,11 +48,11 @@ export default function MapPage() {
           >
             27, Jalan Sri Bahari, George Town, 10050 George Town, Pulau Pinang, Malaysia
           </Link>
-          <p>原串盅火渥(BEYONG HOTPOT)</p>
+          <p>風味小食館旁(Foong Wei Heong Restaurants)</p>
         </div>
         <div>
           <h3 className="mb-2 font-semibold text-green-800">🕒 營業時間</h3>
-          <p>每日 09:00 - 17:00</p>
+          <p>每日 10:00 - 20:00</p>
         </div>
       </div>
     </div>

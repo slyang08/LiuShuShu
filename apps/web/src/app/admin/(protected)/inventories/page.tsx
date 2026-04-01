@@ -1,4 +1,4 @@
-// apps/web/src/app/admin/inventories/page.tsx
+// apps/web/src/app/admin/(protected)/inventories/page.tsx
 import InventoryList from "@/features/inventory/components/InventoryList";
 
 export default function Page() {

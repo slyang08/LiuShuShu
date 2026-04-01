@@ -1,4 +1,4 @@
-// apps/web/src/app/admin/login/page.tsx
+// apps/web/src/app/admin/(auth)/login/page.tsx
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -41,18 +41,26 @@ export default function LoginPage() {
             {error}
           </div>
         )}
-        <input
-          className="rounded-md border-2 p-2"
-          placeholder="email"
-          type="text"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          className="rounded-md border-2 p-2"
-          placeholder="password"
-          type="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="flex flex-col space-y-1">
+          <label htmlFor="email">email:</label>
+          <input
+            id="email"
+            className="rounded-md border-2 p-2"
+            placeholder="email"
+            type="text"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className="flex flex-col space-y-1">
+          <label htmlFor="password">password:</label>
+          <input
+            id="password"
+            className="rounded-md border-2 p-2"
+            placeholder="password"
+            type="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
         <Button onClick={handleLogin} disabled={loading || !email || !password}>
           {loading ? (
             <>

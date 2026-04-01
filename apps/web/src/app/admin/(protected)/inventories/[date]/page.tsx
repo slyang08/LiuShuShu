@@ -1,4 +1,4 @@
-// apps/web/src/app/admin/inventories/[date]/page.tsx
+// apps/web/src/app/admin/(protected)/inventories/[date]/page.tsx
 import { getInventoryByDate } from "@/features/inventory/api";
 import InventoryEditor from "@/features/inventory/components/InventoryEditor";
 import { getVarieties } from "@/features/variety/api";

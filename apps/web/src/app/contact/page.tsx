@@ -58,7 +58,7 @@ export default function ContactPage() {
 
         <section>
           <p className="font-semibold">營業時間</p>
-          <p>每天 09:00 - 17:00</p>
+          <p>每天 10:00 - 20:00</p>
         </section>
 
         <section>

@@ -16,23 +16,6 @@ export const getMe = async (req: Request, res: Response) => {
   });
 };
 
-export const login = async (req: Request<unknown, unknown, LoginInput>, res: Response) => {
-  try {
-    const { email, password } = req.body;
-
-    const token = await authService.login(email, password);
-
-    res.json({
-      message: "Logged in successfully",
-      token,
-      admin: { email },
-      redirectUrl: `${process.env.FRONTEND_URL}/admin/inventories`,
-    });
-  } catch {
-    res.status(401).json({ message: "Invalid credentials" });
-  }
-};
-
 export const register = async (req: Request<unknown, unknown, RegisterInput>, res: Response) => {
   try {
     const { email, username, password, storeId } = req.body;
@@ -65,6 +48,46 @@ export const register = async (req: Request<unknown, unknown, RegisterInput>, re
     res.status(400).json({ message: error.message || "Registration failed" });
   }
 };
+
+export const login = async (req: Request<unknown, unknown, LoginInput>, res: Response) => {
+  try {
+    const { email, password } = req.body;
+
+    const token = await authService.login(email, password);
+
+    res.json({
+      message: "Logged in successfully",
+      token,
+      admin: { email },
+      redirectUrl: `${process.env.FRONTEND_URL}/admin/inventories`,
+    });
+  } catch {
+    res.status(401).json({ message: "Invalid credentials" });
+  }
+};
+
+export async function changePassword(req: Request, res: Response) {
+  try {
+    if (!req.admin) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const adminId = req.admin.adminId;
+    const { currentPassword, newPassword } = req.body;
+
+    const result = await authService.changePassword({
+      adminId,
+      currentPassword,
+      newPassword,
+    });
+
+    return res.json(result);
+  } catch (error: any) {
+    return res.status(error.status || 500).json({
+      message: error.message || "Internal server error",
+    });
+  }
+}
 
 export const logout = (req: Request, res: Response) => {
   // Clean ACCESS_TOKEN from cookie
