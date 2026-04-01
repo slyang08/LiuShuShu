@@ -5,9 +5,10 @@ import { Router } from "express";
 
 const router: Router = Router();
 
-router.get("/me", requireAuth, authController.getMe);
-router.post("/login", authController.login);
 router.post("/register", authController.register);
+router.post("/login", authController.login);
+router.get("/me", requireAuth, authController.getMe);
+router.patch("/change-password", requireAuth, authController.changePassword);
 router.post("/logout", authController.logout);
 
 export default router;

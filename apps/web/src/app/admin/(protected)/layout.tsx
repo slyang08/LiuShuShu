@@ -1,4 +1,4 @@
-// apps/web/src/app/admin/layout.tsx
+// apps/web/src/app/admin/(protected)/layout.tsx
 import { LogoutButton } from "@/components/ui/button/logoutButton";
 import { fetchMe } from "@/features/auth/serverApi";
 import { cookies } from "next/headers";
@@ -24,6 +24,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <Link href="/admin/inventories">庫存 Inventory</Link>
           <Link href="/admin/inventories/create">建立庫存 Create Inventory</Link>
           <Link href="/admin/varieties">榴蓮品種 Varieties</Link>
+          <Link href="/admin/change-password">修改密碼 Change Password</Link>
           <Link href="/">榴蓮樹樹 Home</Link>
           <LogoutButton className="ml-auto" />
         </nav>

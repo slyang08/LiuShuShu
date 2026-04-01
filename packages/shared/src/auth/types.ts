@@ -6,14 +6,20 @@ export interface JwtPayload {
   role: string;
 }
 
-export interface LoginInput {
-  email: string;
-  password: string;
-}
-
 export interface RegisterInput {
   email: string;
   username?: string;
   password: string;
   storeId: number;
+}
+
+export interface LoginInput {
+  email: string;
+  password: string;
+}
+
+export interface ChangePasswordInput {
+  adminId: number;
+  currentPassword: string;
+  newPassword: string;
 }

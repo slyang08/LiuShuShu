@@ -1,3 +1,4 @@
+// apps/web/src/app/admin/(protected)/varieties/page.tsx
 import VarietyManager from "@/features/variety/components/VarietyManager";
 
 export default async function VarietiesPage() {
