@@ -24,8 +24,8 @@ export default function LoginPage() {
 
     try {
       await login(email, password);
+      await new Promise((r) => setTimeout(r, 300));
       router.replace("/admin/inventories");
-      router.refresh();
     } catch (err) {
       alert((err as Error).message);
     } finally {

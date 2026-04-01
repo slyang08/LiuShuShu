@@ -26,9 +26,14 @@ export async function login(email: string, password: string): Promise<string> {
     role: admin.role,
   };
 
-  return jwt.sign(payload, process.env.JWT_SECRET! as string, {
+  const token = jwt.sign(payload, process.env.JWT_SECRET! as string, {
     expiresIn: "1d",
   });
+
+  console.log("🟢 LOGIN TOKEN:", token);
+  console.log("🟢 LOGIN SECRET:", process.env.JWT_SECRET);
+
+  return token;
 }
 
 export async function register(data: RegisterInput): Promise<string> {

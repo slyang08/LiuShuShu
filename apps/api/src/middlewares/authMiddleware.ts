@@ -22,13 +22,17 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!);
 
+    console.log("🟢 DECODED:", decoded);
+
     if (typeof decoded === "string") {
       return res.status(401).json({ message: "Invalid token" });
     }
 
     req.admin = decoded as JwtPayload;
     next();
-  } catch {
+  } catch (error) {
+    console.error("🔴 JWT VERIFY ERROR:", error);
+
     return res.status(401).json({ message: "Invalid token" });
   }
 }
