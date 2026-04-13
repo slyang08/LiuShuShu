@@ -1,5 +1,5 @@
 // apps/web/src/app/admin/(protected)/layout.tsx
-import { LogoutButton } from "@/components/ui/button/logoutButton";
+import { LogoutButton } from "@/components/ui/button/LogoutButton";
 import { fetchMe } from "@/features/auth/serverApi";
 import { cookies } from "next/headers";
 import Link from "next/link";
