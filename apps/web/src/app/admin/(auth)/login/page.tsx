@@ -2,6 +2,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import { login } from "@/features/auth/api";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -64,7 +65,7 @@ export default function LoginPage() {
         <Button onClick={handleLogin} disabled={loading || !email || !password}>
           {loading ? (
             <>
-              <span className="mr-2">🔄</span>
+              <Spinner />
               登入中...
             </>
           ) : (

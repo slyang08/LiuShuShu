@@ -2,6 +2,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import { changePassword } from "@/features/auth/api";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useState } from "react";
@@ -56,7 +57,7 @@ export default function ChangePasswordForm() {
         <Button onClick={handleSubmit} disabled={loading || !current || !next}>
           {loading ? (
             <>
-              <span className="mr-2">🔄</span>
+              <Spinner />
               更改中...
             </>
           ) : (
