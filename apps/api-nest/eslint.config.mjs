@@ -6,7 +6,7 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 import baseConfig from "../../eslint.config.mjs";
 
-export default tseslint.config(
+export default tseslint.config[
   ...baseConfig,
   {
     ignores: ["eslint.config.mjs"],
@@ -27,11 +27,12 @@ export default tseslint.config(
       },
     },
   },
+
   {
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-floating-promises": "warn",
       "@typescript-eslint/no-unsafe-argument": "warn",
     },
-  }
-);
+  },
+];
