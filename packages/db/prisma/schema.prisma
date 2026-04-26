@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model DurianVariety {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  desc      String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  items InventoryItem[]
+}
+
+model Inventory {
+  id        Int      @id @default(autoincrement())
+  date      DateTime @db.Date
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store   Store @relation(fields: [storeId], references: [id])
+  storeId Int
+
+  items InventoryItem[]
+
+  @@unique([storeId, date])
+  @@index([storeId])
+}
+
+model InventoryItem {
+  id          Int             @id @default(autoincrement())
+  quantity    Int             @default(0)
+  price       Decimal         @db.Decimal(10, 2)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  isDeleted   Boolean         @default(false)
+
+  inventory   Inventory       @relation(fields: [inventoryId], references: [id])
+  inventoryId Int
+
+  variety     DurianVariety   @relation(fields: [varietyId], references: [id])
+  varietyId   Int
+
+  @@unique([inventoryId, varietyId])
+  @@index([inventoryId])
+  @@index([varietyId])
+}
+
+model Store {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  inventories Inventory[]
+  admins      Admin[]     @relation("Admins")
+}
+
+enum Role {
+  ADMIN
+  STAFF
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  username  String?  @unique(map: "unique_username")
+  password  String
+  role      Role     @default(ADMIN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  storeId Int
+  store   Store @relation("Admins", fields: [storeId], references: [id])
+}
