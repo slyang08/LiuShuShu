@@ -1,6 +1,7 @@
 // apps/web/src/app/api/auth/change-password/route.ts
-import { serverFetch } from "@/lib/serverFetch";
 import { NextRequest, NextResponse } from "next/server";
+
+import { serverFetch } from "@/lib/serverFetch";
 
 export async function PATCH(req: NextRequest) {
   try {

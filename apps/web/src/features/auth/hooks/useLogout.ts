@@ -1,5 +1,6 @@
 // apps/web/src/features/auth/hooks/useLogout.ts
 import { useRouter } from "next/navigation";
+
 import { logout } from "../api";
 
 export function useLogout() {

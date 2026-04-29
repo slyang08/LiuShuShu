@@ -1,10 +1,12 @@
 // apps/web/src/components/ui/button/logoutButton.tsx
 "use client";
 
+import { useTransition } from "react";
+
+import { LogOut } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { useLogout } from "@/features/auth/hooks/useLogout";
-import { useTransition } from "react";
-import { LogOut } from "lucide-react";
 
 export function LogoutButton({ className = "" }: { className?: string }) {
   const [isPending, startTransition] = useTransition();

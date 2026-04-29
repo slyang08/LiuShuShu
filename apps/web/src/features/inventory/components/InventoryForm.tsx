@@ -1,13 +1,16 @@
 // apps/web/src/features/inventory/components/InventoryForm.tsx
 "use client";
 
+import { useEffect, useState } from "react";
+
+import { Trash2 } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { getMe } from "@/features/auth/api";
 import { getVarieties } from "@/features/variety/api";
 import { CreateInventoryDTO, CreateInventoryItemDTO } from "@liushushu/shared";
-import { useEffect, useState } from "react";
+
 import { createInventory } from "../api";
-import { Trash2 } from "lucide-react";
 
 export default function InventoryForm() {
   const [storeId, setStoreId] = useState<number | null>(null);

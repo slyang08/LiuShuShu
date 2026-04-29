@@ -1,11 +1,15 @@
 "use client";
 
+import { useState } from "react";
+
+import { Trash2 } from "lucide-react";
+
+import { useRouter } from "next/navigation";
+
 import { Button } from "@/components/ui/button";
 import { CreateInventoryDTO, CreateInventoryItemDTO } from "@liushushu/shared";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+
 import { updateInventory } from "../api";
-import { Trash2 } from "lucide-react";
 
 interface Props {
   inventory: {
