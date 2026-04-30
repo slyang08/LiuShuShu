@@ -1,11 +1,13 @@
 // apps/web/src/app/admin/(auth)/login/page.tsx
 "use client";
 
+import { useState } from "react";
+
+import { useRouter } from "next/navigation";
+
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { login } from "@/features/auth/api";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const router = useRouter();

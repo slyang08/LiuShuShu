@@ -1,7 +1,9 @@
 // apps/web/src/features/variety/components/VarietyList.tsx
-import { Button } from "@/components/ui/button";
-import { Variety } from "../../../../../../packages/shared/src/variety/types";
 import { Pencil, Trash2 } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+
+import { Variety } from "../../../../../../packages/shared/src/variety/types";
 
 interface Props {
   varieties: Variety[];

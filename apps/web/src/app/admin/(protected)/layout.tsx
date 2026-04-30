@@ -1,9 +1,10 @@
 // apps/web/src/app/admin/(protected)/layout.tsx
-import { LogoutButton } from "@/components/ui/button/LogoutButton";
-import { fetchMe } from "@/features/auth/serverApi";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+
+import { LogoutButton } from "@/components/ui/button/LogoutButton";
+import { fetchMe } from "@/features/auth/serverApi";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies();

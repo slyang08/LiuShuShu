@@ -1,10 +1,13 @@
 // apps/web/src/features/inventory/components/InventoryList.tsx
 "use client";
 
+import { useEffect, useState } from "react";
+
+import Link from "next/link";
+
 import { Button } from "@/components/ui/button";
 import { Inventory } from "@liushushu/shared/inventory/types";
-import { useEffect, useState } from "react";
-import Link from "next/link";
+
 import { getInventories, getInventoryByDate } from "../api";
 
 const today = new Date().toLocaleDateString("sv", {

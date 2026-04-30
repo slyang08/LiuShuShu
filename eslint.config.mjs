@@ -11,15 +11,29 @@ export default tseslint.config(eslint.configs.recommended, ...tseslint.configs.r
     "import/order": [
       "warn",
       {
-        groups: ["builtin", "external", "internal", ["parent", "sibling"], "index"],
+        groups: ["builtin", "external", "internal", ["parent", "sibling", "index"]],
         pathGroups: [
           {
-            pattern: "@liushushu/**",
+            pattern: "react",
+            group: "external",
+            position: "before",
+          },
+          {
+            pattern: "next/**",
+            group: "external",
+            position: "after",
+          },
+          {
+            pattern: "@/**", // 👈 Next alias
+            group: "internal",
+          },
+          {
+            pattern: "@liushushu/**", // 👈 monorepo
             group: "internal",
           },
         ],
-        pathGroupsExcludedImportTypes: ["builtin"],
-        "newlines-between": "never",
+        pathGroupsExcludedImportTypes: ["react"],
+        "newlines-between": "always",
         alphabetize: { order: "asc" },
       },
     ],

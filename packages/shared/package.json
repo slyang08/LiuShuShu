@@ -1,10 +1,19 @@
 {
   "name": "@liushushu/shared",
   "version": "0.0.1",
-  "main": "src/index.ts",
-  "types": "src/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
   "exports": {
-    ".": "./src/index.ts",
-    "./auth/types": "./src/auth/types.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./auth/types": {
+      "types": "./dist/auth/types.d.ts",
+      "default": "./dist/auth/types.js"
+    }
   }
 }

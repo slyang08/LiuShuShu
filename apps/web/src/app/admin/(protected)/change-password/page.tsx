@@ -1,11 +1,12 @@
 // apps/web/src/app/admin/(protected)/change-password/page.tsx
 "use client";
 
+import { useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { changePassword } from "@/features/auth/api";
 import { useLogout } from "@/features/auth/hooks/useLogout";
-import { useState } from "react";
 
 export default function ChangePasswordForm() {
   const [current, setCurrent] = useState("");

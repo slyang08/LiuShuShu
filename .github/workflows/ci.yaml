@@ -27,15 +27,15 @@ jobs:
       # Install all dependencies
       - run: pnpm install --frozen-lockfile
 
-      # Generate Prisma client
-      # - run: pnpm --filter api prisma:generate
+      # Build packages/shared
+      - run: pnpm --filter @liushushu/shared build
 
       # Generate Prisma client
       - run: pnpm --filter @liushushu/db exec prisma generate
       - run: pnpm --filter @liushushu/db build
 
       # # TypeScript Checks
-      - run: pnpm -r --filter=!api typecheck
+      - run: pnpm -r typecheck
 
       # Lint Frontend and Backend
       - run: pnpm --filter api-nest lint
