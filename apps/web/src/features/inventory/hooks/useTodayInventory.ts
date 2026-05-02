@@ -28,7 +28,7 @@ export function useTodayInventory(): UseTodayInventoryReturn {
   }, []);
 
   useEffect(() => {
-    fetchTodayInventory();
+    void fetchTodayInventory();
   }, [fetchTodayInventory]);
 
   const refetch = async (): Promise<void> => {

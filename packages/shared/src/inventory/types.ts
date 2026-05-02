@@ -1,5 +1,5 @@
 // packages/shared/src/inventory/types.ts
-import { DurianVariety } from "../durian/model";
+import { DurianVariety } from "../variety/model";
 
 export interface InventoryItem {
   id: number;

@@ -3,12 +3,12 @@
 "use client";
 import { useState } from "react";
 
+import { DurianVariety } from "@liushushu/shared";
+
 import { Button } from "@/components/ui/button";
 
-import type { Variety } from "../../../../../../packages/shared/src/variety/types";
-
 interface Props {
-  initialValue?: Variety | null;
+  initialValue?: DurianVariety | null;
   onCreate: (data: { name: string; desc?: string }) => Promise<void>;
   onUpdate: (id: number, data: { name: string; desc?: string }) => Promise<void>;
 }
@@ -47,7 +47,12 @@ export default function VarietyForm({ initialValue, onCreate, onUpdate }: Props)
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mb-5">
+    <form
+      onSubmit={(e) => {
+        void handleSubmit(e);
+      }}
+      className="mb-5"
+    >
       <div className="space-y-4">
         <div>
           <input

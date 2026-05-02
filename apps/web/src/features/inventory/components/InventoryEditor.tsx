@@ -6,10 +6,11 @@ import { Trash2 } from "lucide-react";
 
 import { useRouter } from "next/navigation";
 
-import { Button } from "@/components/ui/button";
 import { CreateInventoryDTO, CreateInventoryItemDTO } from "@liushushu/shared";
 
 import { updateInventory } from "../api";
+
+import { Button } from "@/components/ui/button";
 
 interface Props {
   inventory: {
@@ -77,7 +78,7 @@ export default function InventoryEditor({ inventory, varieties }: Props) {
 
     try {
       setLoading(true);
-      updateInventory(payload);
+      await updateInventory(payload);
       alert("💾 Inventory update successfully!");
       router.refresh();
       router.back();
@@ -162,7 +163,7 @@ export default function InventoryEditor({ inventory, varieties }: Props) {
       {/* ✅ Save items */}
       <div className="flex flex-col gap-4 pt-6 lg:flex-row">
         <Button
-          onClick={handleSubmit}
+          onClick={() => void handleSubmit()}
           disabled={loading || items.filter((item) => item.quantity == 0).length === 0}
           className="rounded-lg bg-blue-500 px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-blue-600 disabled:bg-gray-400 lg:flex-1"
         >

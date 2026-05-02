@@ -1,6 +1,7 @@
 // apps/web/src/features/auth/api.ts
+import { JwtPayload } from "@liushushu/shared";
 
-export async function login(email: string, password: string) {
+export async function login(email: string, password: string): Promise<{ message: string }> {
   const res = await fetch(`/api/admin/login`, {
     method: "POST",
     headers: {
@@ -10,26 +11,26 @@ export async function login(email: string, password: string) {
     body: JSON.stringify({ email, password }),
   });
 
-  const data = await res.json().catch(() => ({}));
+  const data = (await res.json().catch(() => ({}))) as { message?: string };
 
   if (!res.ok) {
     throw new Error(data.message || "Login failed");
   }
 
-  return data;
+  return data as { message: string };
 }
 
-export async function getMe() {
+export async function getMe(): Promise<JwtPayload> {
   const res = await fetch(`/api/admin/me`, {
     method: "GET",
     credentials: "include",
   });
 
   if (!res.ok) throw new Error("Failed to fetch admin");
-  return res.json();
+  return (await res.json()) as JwtPayload;
 }
 
-export async function changePassword(currentPassword: string, newPassword: string) {
+export async function changePassword(currentPassword: string, newPassword: string): Promise<void> {
   const res = await fetch(`/api/auth/change-password`, {
     method: "PATCH",
     headers: {
@@ -40,14 +41,12 @@ export async function changePassword(currentPassword: string, newPassword: strin
   });
 
   if (!res.ok) {
-    const error = await res.json().catch(() => ({}));
-    throw new Error(error.message || "Failed to change password");
+    const error = (await res.json().catch(() => ({}))) as { message?: string };
+    throw new Error(error.message ?? "Failed to change password");
   }
-
-  return res.json();
 }
 
-export async function logout() {
+export async function logout(): Promise<void> {
   try {
     await fetch(`/api/admin/logout`, {
       method: "POST",

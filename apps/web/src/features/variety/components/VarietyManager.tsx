@@ -3,14 +3,15 @@
 
 import { useEffect, useState } from "react";
 
-import type { Variety } from "../../../../../../packages/shared/src/variety/types";
+import { DurianVariety } from "@liushushu/shared";
+
 import { createVariety, deleteVariety, getVarieties, updateVariety } from "../api";
 import VarietyForm from "./VarietyForm";
 import VarietyList from "./VarietyList";
 
 export default function VarietyManager() {
-  const [varieties, setVarieties] = useState<Variety[]>([]);
-  const [editing, setEditing] = useState<Variety | null>(null);
+  const [varieties, setVarieties] = useState<DurianVariety[]>([]);
+  const [editing, setEditing] = useState<DurianVariety | null>(null);
 
   useEffect(() => {
     getVarieties().then(setVarieties).catch(console.error);
@@ -45,7 +46,13 @@ export default function VarietyManager() {
         onCreate={handleCreate}
         onUpdate={handleUpdate}
       />
-      <VarietyList varieties={varieties} onEdit={setEditing} onDelete={handleDelete} />
+      <VarietyList
+        varieties={varieties}
+        onEdit={setEditing}
+        onDelete={(id) => {
+          void handleDelete(id);
+        }}
+      />
     </div>
   );
 }

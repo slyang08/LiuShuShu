@@ -38,8 +38,8 @@ jobs:
       - run: pnpm -r typecheck
 
       # Lint Frontend and Backend
-      - run: pnpm --filter api-nest lint
-      - run: pnpm --filter web lint
+      - run: pnpm --filter api-nest lint:fix
+      - run: pnpm --filter web lint:fix
 
       # Build up Frontend and Backend
       - run: pnpm --filter api-nest build

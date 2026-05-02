@@ -5,12 +5,13 @@ import { useEffect, useState } from "react";
 
 import { Trash2 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { getMe } from "@/features/auth/api";
-import { getVarieties } from "@/features/variety/api";
 import { CreateInventoryDTO, CreateInventoryItemDTO } from "@liushushu/shared";
 
 import { createInventory } from "../api";
+
+import { Button } from "@/components/ui/button";
+import { getMe } from "@/features/auth/api";
+import { getVarieties } from "@/features/variety/api";
 
 export default function InventoryForm() {
   const [storeId, setStoreId] = useState<number | null>(null);
@@ -132,7 +133,7 @@ export default function InventoryForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-full space-y-4 overflow-hidden">
+    <form onSubmit={(e) => void handleSubmit(e)} className="max-w-full space-y-4 overflow-hidden">
       {/* Date input */}
       <div>
         <label className="mb-2 block text-sm font-medium">📅 庫存日期（檳城時間）</label>
@@ -196,12 +197,7 @@ export default function InventoryForm() {
         <Button type="button" onClick={addRow} className="px-3 py-2">
           + 新增品項 Add Item
         </Button>
-        <Button
-          type="submit"
-          onClick={handleSubmit}
-          disabled={Submitting}
-          className="bg-blue-500 px-4 py-2 text-white"
-        >
+        <Button type="submit" disabled={Submitting} className="bg-blue-500 px-4 py-2 text-white">
           {Submitting ? "儲存中... Saving..." : "建立庫存 Save Inventory"}
         </Button>
       </div>

@@ -1,13 +1,13 @@
 // apps/web/src/features/variety/components/VarietyList.tsx
 import { Pencil, Trash2 } from "lucide-react";
 
+import { DurianVariety } from "@liushushu/shared";
+
 import { Button } from "@/components/ui/button";
 
-import { Variety } from "../../../../../../packages/shared/src/variety/types";
-
 interface Props {
-  varieties: Variety[];
-  onEdit: (v: Variety) => void;
+  varieties: DurianVariety[];
+  onEdit: (v: DurianVariety) => void;
   onDelete: (id: number) => void;
 }
 
