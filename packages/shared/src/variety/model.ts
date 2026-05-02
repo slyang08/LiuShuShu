@@ -1,5 +1,5 @@
-// apps/web/src/features/variety/types.ts
-export interface Variety {
+// packages/src/variety/model.ts
+export interface DurianVariety {
   id: number;
   name: string;
   desc?: string;

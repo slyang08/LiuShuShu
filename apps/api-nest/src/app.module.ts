@@ -6,6 +6,7 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { AuthModule } from "./auth/auth.module";
 import { HealthModule } from "./health/health.module";
+import { VarietyModule } from "./variety/variety.module";
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { HealthModule } from "./health/health.module";
     }),
     HealthModule,
     AuthModule,
+    VarietyModule,
   ],
   controllers: [AppController],
   providers: [AppService],

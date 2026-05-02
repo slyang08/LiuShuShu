@@ -1,8 +1,9 @@
 // apps/web/src/app/durians/[storeId]/page.tsx
 import Link from "next/link";
 
-import { getPublicTodayInventory } from "@/features/inventory/api";
 import { InventoryItem } from "@liushushu/shared/inventory/types";
+
+import { getPublicTodayInventory } from "@/features/inventory/api";
 
 type Props = {
   params: { storeId: string };

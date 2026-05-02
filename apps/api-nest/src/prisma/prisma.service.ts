@@ -2,8 +2,7 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 
-import type { PrismaClient } from "@liushushu/db";
-import { createPrismaClient } from "@liushushu/db";
+import { PrismaClient, createPrismaClient } from "@liushushu/db";
 
 @Injectable()
 export class PrismaService implements OnModuleInit, OnModuleDestroy {
@@ -13,6 +12,7 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
 
   async onModuleInit() {
     const url = this.config.get<string>("DATABASE_URL");
+    console.log("DATABASE_URL:", url);
 
     if (!url) {
       throw new Error("DATABASE_URL not set");
