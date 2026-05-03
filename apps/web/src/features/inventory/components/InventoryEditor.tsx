@@ -1,3 +1,4 @@
+// apps/web/src/features/inventory/components/InventoryEditor.tsx
 "use client";
 
 import { useState } from "react";
@@ -6,32 +7,21 @@ import { Trash2 } from "lucide-react";
 
 import { useRouter } from "next/navigation";
 
-import { CreateInventoryDTO, CreateInventoryItemDTO } from "@liushushu/shared";
+import { CreateInventoryDTO, CreateInventoryItemDTO, Inventory } from "@liushushu/shared";
 
 import { updateInventory } from "../api";
 
 import { Button } from "@/components/ui/button";
 
 interface Props {
-  inventory: {
-    id: number;
-    date: string; // "20XX-XX-XXT00:00:00.000Z"
-    storeId: number;
-    items: Array<{
-      id: number;
-      varietyId: number;
-      variety: { id: number; name: string };
-      quantity: number;
-      price: number;
-    }>;
-  };
+  inventory: Inventory;
   varieties: { id: number; name: string }[];
 }
 
 export default function InventoryEditor({ inventory, varieties }: Props) {
   const [items, setItems] = useState<CreateInventoryItemDTO[]>(() =>
     inventory.items.map((item) => ({
-      varietyId: item.varietyId,
+      varietyId: item.id,
       quantity: item.quantity,
       price: item.price,
     }))

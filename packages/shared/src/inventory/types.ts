@@ -3,6 +3,7 @@ import { DurianVariety } from "../variety/model";
 
 export interface InventoryItem {
   id: number;
+  varietyId: number;
   quantity: number;
   price: number;
   variety: DurianVariety;
@@ -10,7 +11,8 @@ export interface InventoryItem {
 
 export interface Inventory {
   id: number;
-  date: string;
+  date: string; // "20XX-XX-XXT00:00:00.000Z"
+  storeId: number;
   items: InventoryItem[];
 }
 
