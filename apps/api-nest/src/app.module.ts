@@ -8,6 +8,7 @@ import { AuthModule } from "./auth/auth.module";
 import { HealthModule } from "./health/health.module";
 import { InventoryModule } from "./inventory/inventory.module";
 import { InventoryItemModule } from "./inventory-item/inventory-item.module";
+import { StoreModule } from "./store/store.module";
 import { VarietyModule } from "./variety/variety.module";
 
 @Module({
@@ -21,6 +22,7 @@ import { VarietyModule } from "./variety/variety.module";
     VarietyModule,
     InventoryModule,
     InventoryItemModule,
+    StoreModule,
   ],
   controllers: [AppController],
   providers: [AppService],
