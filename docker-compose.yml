@@ -5,13 +5,13 @@ services:
       context: .
       dockerfile: apps/api/Dockerfile
     ports:
-      - "8080:8080"
+      - "3001:3001"
     env_file:
       - .env
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/ || exit 1"]
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3001/ || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -24,12 +24,12 @@ services:
       context: .
       dockerfile: apps/web/Dockerfile
       args:
-        NEXT_PUBLIC_API_URL: http://localhost:8080
+        API_BASE_URL: http://localhost:3000
     ports:
       - "3000:3000"
     environment:
-      NEXT_PUBLIC_API_URL: http://localhost:8080
-      NODE_ENV: production
+      API_BASE_URL: http://localhost:3000
+      NODE_ENV: development
     depends_on:
       api:
         condition: service_healthy
