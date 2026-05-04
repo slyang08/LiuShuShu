@@ -1,7 +1,7 @@
 // apps/web/src/app/admin/inventories/create/page.tsx
 import InventoryForm from "@/features/inventory/components/InventoryForm";
 
-export default async function Page() {
+export default function Page() {
   return (
     <div className="px-4 pb-6">
       <h1 className="text-xl font-bold">建立每日庫存</h1>

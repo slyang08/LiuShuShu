@@ -1,7 +1,9 @@
 // apps/web/src/lib/serverFetch.ts
 import { cookies } from "next/headers";
 
-export async function serverFetch(url: string, options: RequestInit = {}) {
+import { API_BASE_URL } from "@/lib/config";
+
+export async function serverFetch(path: string, options: RequestInit = {}) {
   const cookieStore = await cookies();
   const token = cookieStore.get("access_token")?.value;
 
@@ -17,7 +19,7 @@ export async function serverFetch(url: string, options: RequestInit = {}) {
     options.body = JSON.stringify(options.body);
   }
 
-  const res = await fetch(url, {
+  const res = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
     headers,
     cache: "no-store",

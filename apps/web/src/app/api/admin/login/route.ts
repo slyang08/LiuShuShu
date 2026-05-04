@@ -1,11 +1,13 @@
 // apps/web/src/app/api/admin/login/route.ts
 import { NextRequest, NextResponse } from "next/server";
 
+import { API_BASE_URL } from "@/lib/config";
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    const apiRes = await fetch("https://liushushu-api-latest.onrender.com/admin/auth/login", {
+    const apiRes = await fetch(`${API_BASE_URL}/admin/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -40,7 +42,8 @@ export async function POST(req: NextRequest) {
     const response = NextResponse.json(data);
     response.cookies.set("access_token", data.token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      // secure: process.env.NODE_ENV === "production",
+      secure: false,
       sameSite: "lax",
       path: "/",
       maxAge: 24 * 60 * 60,
