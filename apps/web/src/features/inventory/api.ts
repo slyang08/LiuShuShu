@@ -1,10 +1,8 @@
 // apps/web/src/features/inventory/api.ts
 import { CreateInventoryDTO, Inventory, InventoryItem } from "@liushushu/shared";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
 export async function createInventory(data: CreateInventoryDTO): Promise<Inventory> {
-  const res = await fetch(`${API_URL}/admin/inventories`, {
+  const res = await fetch(`/api/admin/inventories`, {
     method: "POST",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
@@ -20,15 +18,16 @@ export async function createInventory(data: CreateInventoryDTO): Promise<Invento
 }
 
 export async function getInventories(): Promise<Inventory[]> {
-  const res = await fetch(`${API_URL}/admin/inventories`, {
+  const res = await fetch(`/api/admin/inventories`, {
     cache: "no-store",
+    credentials: "include",
   });
   if (!res.ok) throw new Error("Failed to fetch inventories");
   return (await res.json()) as Inventory[];
 }
 
 export async function getAdminTodayInventory(): Promise<InventoryItem[]> {
-  const res = await fetch(`${API_URL}/admin/inventories/today`, {
+  const res = await fetch(`/api/admin/inventories/today`, {
     cache: "no-store",
   });
   if (!res.ok) throw new Error("今日庫存載入失敗");
@@ -37,7 +36,7 @@ export async function getAdminTodayInventory(): Promise<InventoryItem[]> {
 
 export async function getPublicTodayInventory(storeId: number): Promise<InventoryItem[]> {
   try {
-    const res = await fetch(`${API_URL}/inventories/${storeId}/today`, {
+    const res = await fetch(`${process.env.API_BASE_URL}/admin/inventories/${storeId}/today`, {
       cache: "no-store",
     });
 
@@ -51,7 +50,7 @@ export async function getPublicTodayInventory(storeId: number): Promise<Inventor
 }
 
 export async function getInventoryByDate(date: Date): Promise<Inventory> {
-  const res = await fetch(`${API_URL}/admin/inventories/${date.toISOString().split("T")[0]}`, {
+  const res = await fetch(`/api/admin/inventories/${date.toISOString().split("T")[0]}`, {
     cache: "no-store",
   });
   if (!res.ok) throw new Error("Failed to fetch inventory");
@@ -59,7 +58,7 @@ export async function getInventoryByDate(date: Date): Promise<Inventory> {
 }
 
 export async function updateInventory(data: CreateInventoryDTO): Promise<Inventory> {
-  const res = await fetch(`${API_URL}/admin/inventories`, {
+  const res = await fetch(`/api/admin/inventories`, {
     method: "PUT",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
@@ -78,7 +77,7 @@ export async function updateInventoryItem(
   itemId: number,
   data: { quantity: number; price: number }
 ): Promise<InventoryItem> {
-  const res = await fetch(`${API_URL}/admin/inventory-items/${itemId}`, {
+  const res = await fetch(`/api/admin/inventory-items/${itemId}`, {
     method: "PATCH",
     credentials: "include",
     headers: { "Content-Type": "application/json" },

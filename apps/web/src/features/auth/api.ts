@@ -31,7 +31,7 @@ export async function getMe(): Promise<JwtPayload> {
 }
 
 export async function changePassword(currentPassword: string, newPassword: string): Promise<void> {
-  const res = await fetch(`/api/auth/change-password`, {
+  const res = await fetch(`/api/admin/change-password`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",

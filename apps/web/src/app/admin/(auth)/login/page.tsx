@@ -28,6 +28,7 @@ export default function LoginPage() {
     try {
       await login(email, password);
       await new Promise((r) => setTimeout(r, 300));
+      console.log("document.cookie:", document.cookie);
       router.replace("/admin/inventories");
     } catch (err) {
       alert((err as Error).message);
@@ -64,7 +65,7 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <Button onClick={handleLogin} disabled={loading || !email || !password}>
+        <Button onClick={() => void handleLogin()} disabled={loading || !email || !password}>
           {loading ? (
             <>
               <Spinner />

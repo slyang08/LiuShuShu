@@ -43,4 +43,7 @@ jobs:
 
       # Build up Frontend and Backend
       - run: pnpm --filter api-nest build
-      - run: pnpm --filter web build
+      - name: Build
+        run: pnpm --filter web build
+        env:
+          API_BASE_URL: https://liushushu-api-latest.onrender.com

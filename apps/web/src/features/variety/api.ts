@@ -1,10 +1,8 @@
 // apps/web/src/features/variety/api.ts
 import { DurianVariety } from "@liushushu/shared";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
 export async function getVarieties(): Promise<DurianVariety[]> {
-  const res = await fetch(`${API_URL}/admin/varieties`, {
+  const res = await fetch(`/api/admin/varieties`, {
     cache: "no-store",
     credentials: "include",
   });
@@ -20,7 +18,7 @@ export async function getVarieties(): Promise<DurianVariety[]> {
 }
 
 export async function createVariety(data: { name: string; desc?: string }): Promise<DurianVariety> {
-  const res = await fetch(`${API_URL}/admin/varieties`, {
+  const res = await fetch(`/api/admin/varieties`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -43,7 +41,7 @@ export async function updateVariety(
     desc: string;
   }
 ): Promise<DurianVariety> {
-  const res = await fetch(`${API_URL}/admin/varieties/${id}`, {
+  const res = await fetch(`/api/admin/varieties/${id}`, {
     method: "PATCH",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
@@ -54,7 +52,7 @@ export async function updateVariety(
 }
 
 export async function deleteVariety(id: number): Promise<void> {
-  const res = await fetch(`${API_URL}/admin/varieties/${id}`, {
+  const res = await fetch(`/api/admin/varieties/${id}`, {
     method: "DELETE",
     credentials: "include",
   });

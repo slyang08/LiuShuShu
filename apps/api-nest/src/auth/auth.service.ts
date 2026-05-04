@@ -22,6 +22,42 @@ export class AuthService {
     return secret;
   }
 
+  async register(email: string, password: string, storeId: number) {
+    const store = await this.prisma.db.store.findUnique({
+      where: { id: storeId },
+    });
+
+    if (!store) {
+      throw new BadRequestException("Invalid store");
+    }
+
+    if (!email || !password) {
+      throw new BadRequestException("Missing required fields");
+    }
+
+    if (password.length < 8) {
+      throw new BadRequestException("Password must be at least 8 characters");
+    }
+
+    const existing = await this.prisma.db.admin.findUnique({
+      where: { email },
+    });
+
+    if (existing) {
+      throw new BadRequestException("Email already in use");
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    return this.prisma.db.admin.create({
+      data: {
+        email,
+        password: hashedPassword,
+        storeId,
+      },
+    });
+  }
+
   async login(email: string, password: string): Promise<string> {
     const admin = await this.prisma.db.admin.findUnique({
       where: { email },

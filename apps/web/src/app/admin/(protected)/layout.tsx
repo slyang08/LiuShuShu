@@ -13,7 +13,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (!token) redirect("/admin/login");
 
   try {
-    await fetchMe(token);
+    await fetchMe();
   } catch {
     redirect("/admin/login");
   }

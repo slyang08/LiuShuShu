@@ -2,7 +2,7 @@
 import Link from "next/link";
 
 export default function Home() {
-  console.log(".env:", process.env.NEXT_PUBLIC_API_URL);
+  console.log(".env:", process.env.API_BASE_URL);
   return (
     <div className="flex min-h-screen flex-col items-center justify-center space-y-6 p-6">
       <h1 className="text-3xl font-bold">榴蓮樹樹</h1>

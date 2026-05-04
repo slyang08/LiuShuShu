@@ -1,11 +1,8 @@
 // apps/web/src/features/auth/serverApi.ts
-export async function fetchMe(token: string) {
-  const res = await fetch("https://liushushu-api-latest.onrender.com/admin/auth/me", {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+import { serverFetch } from "@/lib/serverFetch";
+
+export async function fetchMe() {
+  const res = await serverFetch("/admin/auth/me");
 
   if (!res.ok) {
     throw new Error("Unauthorized");

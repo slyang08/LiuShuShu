@@ -32,6 +32,11 @@ export class InventoryController {
     return this.inventoryService.findToday(user.storeId);
   }
 
+  @Get(":storeId/today")
+  async findTodayPublic(@Param("storeId") storeId: string): Promise<unknown> {
+    return this.inventoryService.findToday(Number(storeId));
+  }
+
   @Get(":date")
   @UseGuards(JwtAuthGuard)
   async findByDate(
