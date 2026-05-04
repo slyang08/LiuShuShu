@@ -38,12 +38,8 @@ jobs:
       - run: pnpm -r typecheck
 
       # Lint Frontend and Backend
-      - run: pnpm --filter api-nest lint:fix
-      - run: pnpm --filter web lint:fix
+      - run: pnpm --filter @liushushu/api lint:fix
+      - run: pnpm --filter @liushushu/web lint:fix
 
-      # Build up Frontend and Backend
-      - run: pnpm --filter api-nest build
-      - name: Build
-        run: pnpm --filter web build
-        env:
-          API_BASE_URL: https://liushushu-api-latest.onrender.com
+      # Build up Backend
+      - run: pnpm --filter @liushushu/api build

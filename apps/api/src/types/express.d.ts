@@ -1,12 +1,10 @@
-// apps/api/src/types/express.d.ts
-import type { JwtPayload } from "@liushushu/shared";
+// src/types/express.d.ts
+import { JwtPayload } from "@liushushu/shared";
 
 declare global {
   namespace Express {
     interface Request {
-      admin?: JwtPayload;
+      user?: JwtPayload;
     }
   }
 }
-
-export {};

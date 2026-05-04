@@ -31,7 +31,7 @@ jobs:
           cache: pnpm
 
       # Pre-check dependencies
-      - run: pnpm install --filter ./apps/web --frozen-lockfile
+      - run: pnpm install --frozen-lockfile
 
       # Login Docker
       - name: Login Docker Hub
