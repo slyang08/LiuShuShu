@@ -1,7 +1,7 @@
 // apps/web/src/app/admin/(protected)/inventories/[date]/page.tsx
-import { getInventoryByDate } from "@/features/inventory/api";
-import InventoryEditor from "@/features/inventory/components/InventoryEditor";
-import { getVarieties } from "@/features/variety/api";
+import { getInventoryByDate } from "@/features/inventory";
+import { InventoryEditor } from "@/features/inventory";
+import { getVarieties } from "@/features/variety";
 
 interface Props {
   params: Promise<{ date: string }>;

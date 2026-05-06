@@ -2,7 +2,7 @@
 import { Body, Controller, Get, Patch, Post, Res, UseGuards } from "@nestjs/common";
 import { Response } from "express";
 
-import { ChangePasswordInput, RegisterInput, LoginInput, JwtPayload } from "@liushushu/shared";
+import { ChangePasswordDTO, RegisterDTO, LoginDTO, JwtPayload } from "@liushushu/shared";
 
 import { AuthService } from "./auth.service";
 import { GetUser } from "./decorators/current-user.decorator";
@@ -13,10 +13,10 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post("register")
-  async register(@Body() body: RegisterInput, @Res({ passthrough: true }) res: Response) {
-    const admin = await this.authService.register(body.email, body.password, body.storeId);
+  async register(@Body() dto: RegisterDTO, @Res({ passthrough: true }) res: Response) {
+    const admin = await this.authService.register(dto);
 
-    const token = await this.authService.login(body.email, body.password);
+    const token = await this.authService.login(dto);
 
     res.cookie("access_token", token, {
       httpOnly: true,
@@ -32,8 +32,8 @@ export class AuthController {
   }
 
   @Post("login")
-  async login(@Body() body: LoginInput, @Res({ passthrough: true }) res: Response) {
-    const token = await this.authService.login(body.email, body.password);
+  async login(@Body() dto: LoginDTO, @Res({ passthrough: true }) res: Response) {
+    const token = await this.authService.login(dto);
 
     res.cookie("access_token", token, {
       httpOnly: true,
@@ -56,8 +56,8 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Patch("change-password")
-  async changePassword(@GetUser() user: JwtPayload, @Body() body: ChangePasswordInput) {
-    return this.authService.changePassword(user.adminId, body.currentPassword, body.newPassword);
+  async changePassword(@GetUser() user: JwtPayload, @Body() dto: ChangePasswordDTO) {
+    return this.authService.changePassword({ ...dto, adminId: user.adminId });
   }
 
   @Post("logout")

@@ -1,6 +1,8 @@
 // apps/api-nest/src/inventory-item/inventory-item.controller.ts
 import { Body, Controller, Param, ParseIntPipe, Patch, UseGuards } from "@nestjs/common";
 
+import { UpdateInventoryItemDTO } from "@liushushu/shared";
+
 import { InventoryItemService } from "./inventory-item.service";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 
@@ -10,10 +12,10 @@ export class InventoryItemController {
 
   @Patch(":id")
   @UseGuards(JwtAuthGuard)
-  async updateQuantity(
+  async updateItem(
     @Param("id", ParseIntPipe) id: number,
-    @Body() body: { quantity: number }
+    @Body() body: UpdateInventoryItemDTO
   ): Promise<unknown> {
-    return this.inventoryItemService.updateQuantity(id, body.quantity);
+    return this.inventoryItemService.updateItem(id, body);
   }
 }

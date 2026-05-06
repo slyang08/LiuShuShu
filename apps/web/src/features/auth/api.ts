@@ -54,7 +54,5 @@ export async function logout(): Promise<void> {
     });
   } catch (error) {
     console.error("Logout error:", error);
-  } finally {
-    window.location.href = "/admin/login";
   }
 }

@@ -9,3 +9,8 @@ export interface CreateInventoryDTO {
   date: string; // YYYY-MM-DD
   items: CreateInventoryItemDTO[];
 }
+
+export interface UpdateInventoryItemDTO {
+  quantity: number;
+  price: number;
+}

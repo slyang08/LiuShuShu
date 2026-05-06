@@ -55,7 +55,7 @@ export default function ChangePasswordForm() {
           />
         </div>
 
-        <Button onClick={handleSubmit} disabled={loading || !current || !next}>
+        <Button onClick={() => void handleSubmit()} disabled={loading || !current || !next}>
           {loading ? (
             <>
               <Spinner />
