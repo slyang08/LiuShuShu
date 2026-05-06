@@ -10,7 +10,7 @@ type Props = {
 };
 
 export default async function DuriansPage({ params }: Props) {
-  const { storeId } = await params;
+  const { storeId } = params;
   console.log("Fetching inventory for store ID:", storeId);
   const todayInventory = await getPublicTodayInventory(Number(storeId));
 

@@ -8,9 +8,10 @@
   "scripts": {
     "generate": "prisma generate",
     "build": "prisma generate && tsc",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --runInBand",
+    "test:watch": "jest --watch --runInBand",
     "seed": "tsx prisma/seed.ts",
-    "test:db": "tsx prisma/test.ts"
+    "test:db": "tsx src/__test__/db.test.ts"
   },
   "keywords": [],
   "author": "",

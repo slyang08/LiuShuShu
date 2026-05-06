@@ -1,5 +1,10 @@
 // apps/web/src/features/inventory/api.ts
-import { CreateInventoryDTO, Inventory, InventoryItem } from "@liushushu/shared";
+import {
+  CreateInventoryDTO,
+  Inventory,
+  InventoryItem,
+  UpdateInventoryItemDTO,
+} from "@liushushu/shared";
 
 export async function createInventory(data: CreateInventoryDTO): Promise<Inventory> {
   const res = await fetch(`/api/admin/inventories`, {
@@ -75,7 +80,7 @@ export async function updateInventory(data: CreateInventoryDTO): Promise<Invento
 
 export async function updateInventoryItem(
   itemId: number,
-  data: { quantity: number; price: number }
+  data: UpdateInventoryItemDTO
 ): Promise<InventoryItem> {
   const res = await fetch(`/api/admin/inventory-items/${itemId}`, {
     method: "PATCH",

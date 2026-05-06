@@ -1,6 +1,6 @@
-// packages/db/prisma/seed.ts
+// packages/db/src/__tests__/db.test.ts
 import "dotenv/config";
-import { prisma } from "../src/testClient";
+import { prisma } from "./connection.test";
 
 console.log("DATABASE_URL =", process.env.DATABASE_URL);
 

@@ -18,7 +18,7 @@ interface Props {
   varieties: { id: number; name: string }[];
 }
 
-export default function InventoryEditor({ inventory, varieties }: Props) {
+export function InventoryEditor({ inventory, varieties }: Props) {
   const [items, setItems] = useState<CreateInventoryItemDTO[]>(() =>
     inventory.items.map((item) => ({
       varietyId: item.id,
