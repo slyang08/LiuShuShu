@@ -12,8 +12,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
     : routing.defaultLocale;
 
   const messages = await loaders[locale]();
-  console.log("locale:", locale);
-  console.log("messages:", loaders[locale]);
+
   return {
     locale,
     messages,
