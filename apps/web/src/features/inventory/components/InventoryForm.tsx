@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 
 import { Trash2 } from "lucide-react";
 
+import Link from "next/link";
+
 import { CreateInventoryDTO, CreateInventoryItemDTO } from "@liushushu/shared";
 
 import { createInventory } from "../api";
@@ -122,12 +124,12 @@ export default function InventoryForm() {
         <p className="mb-4 text-yellow-700">
           請先到 <strong>榴蓮品種</strong> 新增榴蓮品種
         </p>
-        <a
+        <Link
           href="/admin/varieties"
           className="inline-flex items-center rounded-lg bg-yellow-500 px-4 py-2 text-white hover:bg-yellow-600"
         >
           前往榴蓮品種 →
-        </a>
+        </Link>
       </div>
     );
   }

@@ -1,3 +1,4 @@
+// apps/web/src/app/layout.tsx
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -13,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "榴蓮樹樹",
-  description: "榴蓮叔叔勤上班",
+  title: "榴莲树树",
+  description: "榴莲叔叔勤上班",
 };
 
 export default function RootLayout({
@@ -23,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
