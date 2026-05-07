@@ -1,7 +1,7 @@
 // apps/web/src/components/ui/header/Header.tsx
 import Link from "next/link";
 
-// import { LanguageSwitcher } from "@/components/ui/language-switcher/LanguageSwitcher";
+import { LanguageSwitcher } from "@/components/ui";
 
 export function Header() {
   return (
@@ -12,7 +12,7 @@ export function Header() {
       </Link>
 
       {/* Right */}
-      {/* <LanguageSwitcher /> */}
+      <LanguageSwitcher />
     </header>
   );
 }
