@@ -1,18 +1,22 @@
 // apps/web/src/app/contact/page.tsx
+import { useTranslations } from "next-intl";
+
 import Image from "next/image";
 import Link from "next/link";
 
 export default function ContactPage() {
+  const t = useTranslations();
+
   return (
     <div className="max-w-xl space-y-2 p-6 lg:space-y-6">
       <section className="">
         <div className="mb-2 flex flex-row">
-          <h1 className="text-2xl font-bold">聯絡</h1>
+          <h1 className="text-2xl font-bold">{t("contact.contact")}&nbsp;</h1>
           <Link href="/" className="block text-2xl font-bold text-black hover:underline">
-            榴蓮樹樹
+            {t("home.title")}
           </Link>
         </div>
-        <p className="text-gray-600">如果想預留榴蓮或有任何問題，可以透過以下方式聯絡我們。</p>
+        <p className="text-gray-600">{t("contact.problem")}</p>
       </section>
 
       <div className="space-y-3">
@@ -41,7 +45,7 @@ export default function ContactPage() {
           </Link>
         </section>
 
-        <p className="mb-1 font-semibold">微信: ElingKi5814</p>
+        <p className="mb-1 font-semibold">{t("contact.wechat")}: ElingKi5814</p>
         <section className="flex flex-col items-center">
           <div className="relative flex h-100 w-65.5 flex-col items-center rounded-xl border-2 border-green-100 bg-white p-6 shadow-lg lg:h-113 lg:w-78">
             <Image
@@ -57,12 +61,12 @@ export default function ContactPage() {
         </section>
 
         <section>
-          <p className="font-semibold">營業時間</p>
-          <p>每天 10:00 - 20:00</p>
+          <p className="font-semibold">{t("contact.businessTime")}</p>
+          <p>10:00 - 20:00</p>
         </section>
 
         <section>
-          <p className="font-semibold">地址</p>
+          <p className="font-semibold">{t("contact.address")}</p>
           <Link href="/map" className="text-blue-600 hover:underline">
             <p>27, Jalan Sri Bahari, George Town, 10050 George Town, Pulau Pinang, Malaysia</p>
           </Link>

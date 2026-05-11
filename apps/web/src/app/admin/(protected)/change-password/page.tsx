@@ -33,7 +33,7 @@ export default function ChangePasswordForm() {
     <>
       <div className="mt-[20vh] flex flex-col items-center space-y-4">
         <div className="flex flex-col space-y-1">
-          <label htmlFor="currentPassword">Current Password:</label>
+          <label htmlFor="currentPassword">当前密码:</label>
           <input
             id="currentPassword"
             className="rounded-md border-2 p-2"
@@ -44,7 +44,7 @@ export default function ChangePasswordForm() {
           />
         </div>
         <div className="flex flex-col space-y-1">
-          <label htmlFor="newPassword">New Password:</label>
+          <label htmlFor="newPassword">新密码:</label>
           <input
             id="newPassword"
             className="rounded-md border-2 p-2"
@@ -62,7 +62,7 @@ export default function ChangePasswordForm() {
               更改中...
             </>
           ) : (
-            "更改密碼"
+            "更改密码"
           )}
         </Button>
       </div>

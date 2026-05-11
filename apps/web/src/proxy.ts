@@ -35,7 +35,8 @@ export const config = {
   matcher: [
     "/admin/:path*",
     "/",
-    "/(en|zh-CN|zh-TW|ms)/:path*",
+    // "/(en|zh-CN|zh-TW|ms)/:path*",
+    "/(en|zh-CN)/:path*",
     "/durians/:path*",
     "/map",
     "/contact",

@@ -5,18 +5,29 @@ export type Messages = {
     subtitle: string;
     todayDurian: string;
     location: string;
-    contact: string;
+    contactUs: string;
   };
-  admin: {
-    login: string;
+  contact: {
+    address: string;
+    businessTime: string;
+    contact: string;
+    problem: string;
+    wechat: string;
   };
   durians: {
     today: string;
     title: string;
+    inventories: string;
     empty: string;
     emptyDesc: string;
     perKg: string;
     pcs: string;
+  };
+  map: {
+    location: string;
+  };
+  admin: {
+    login: string;
   };
   nav: {
     switchLang: string;

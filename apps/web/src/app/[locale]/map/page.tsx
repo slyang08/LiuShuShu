@@ -1,8 +1,12 @@
 // apps/web/src/app/map/page.tsx
+import { useTranslations } from "next-intl";
+
 import Image from "next/image";
 import Link from "next/link";
 
 export default function MapPage() {
+  const t = useTranslations();
+
   return (
     <div className="mx-auto max-w-4xl space-y-6 p-6">
       <div className="flex flex-col items-center text-center">
@@ -13,13 +17,12 @@ export default function MapPage() {
             </div>
             <div className="flex flex-row">
               <Link href="/" className="block text-2xl font-bold">
-                榴蓮樹樹
+                {t("home.title")}
+                <span className="text-2xl">&nbsp;{t("map.location")}</span>
               </Link>
-              <span className="text-2xl">位置</span>
             </div>
           </div>
         </h1>
-        <p className="text-xl text-gray-600 lg:mb-6">檳城新鮮榴蓮，歡迎現場挑選！</p>
       </div>
 
       <div className="h-100 w-full overflow-hidden rounded-2xl border-4 border-green-200 shadow-2xl md:h-150 lg:h-125">
@@ -39,7 +42,7 @@ export default function MapPage() {
 
       <div className="grid gap-6 text-sm text-gray-600 md:grid-cols-2">
         <div>
-          <h3 className="mb-2 font-semibold text-green-800">📍 地址</h3>
+          <h3 className="mb-2 font-semibold text-green-800">📍 {t("contact.address")}</h3>
           <Link
             href="https://maps.app.goo.gl/Hg5ZGsCwJ7gYR13YA"
             target="_blank"
@@ -48,11 +51,11 @@ export default function MapPage() {
           >
             27, Jalan Sri Bahari, George Town, 10050 George Town, Pulau Pinang, Malaysia
           </Link>
-          <p>風味小食館旁(Foong Wei Heong Restaurants)</p>
+          <p>風味小食館旁(Next to Foong Wei Heong Restaurants)</p>
         </div>
         <div>
-          <h3 className="mb-2 font-semibold text-green-800">🕒 營業時間</h3>
-          <p>每日 10:00 - 20:00</p>
+          <h3 className="mb-2 font-semibold text-green-800">🕒 {t("contact.businessTime")}</h3>
+          <p>10:00 - 20:00</p>
         </div>
       </div>
     </div>
