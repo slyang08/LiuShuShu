@@ -6,18 +6,29 @@ export const zhCN: Messages = {
     subtitle: "新鲜榴莲每日更新中",
     todayDurian: "今日榴莲",
     location: "店铺位置",
-    contact: "联络我们",
+    contactUs: "联繫我们",
   },
-  admin: {
-    login: "登录",
+  contact: {
+    address: "地址",
+    businessTime: "营业时间",
+    contact: "联繫",
+    problem: "如果想预留榴莲或有任何问题，可以透过以下方式联繫我们。",
+    wechat: "微信",
+  },
+  map: {
+    location: "位置",
   },
   durians: {
     today: "今天",
     title: "今日榴莲",
+    inventories: "還有的果",
     empty: "榴莲暂无进货或已卖光 😢",
-    emptyDesc: "请明天再来看看新鲜的榴莲哦！",
+    emptyDesc: "请再稍等一下哦！",
     perKg: "(RM / 1000克)",
     pcs: "粒",
+  },
+  admin: {
+    login: "登录",
   },
   nav: {
     switchLang: "语言",

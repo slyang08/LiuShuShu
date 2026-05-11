@@ -18,7 +18,7 @@ export default function LoginPage() {
 
   const handleLogin = async () => {
     if (!email || !password) {
-      setError("請輸入帳號密碼");
+      setError("请输入帐号密码");
       return;
     }
 

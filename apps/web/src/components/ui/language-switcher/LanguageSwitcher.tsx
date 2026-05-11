@@ -19,6 +19,8 @@ export function LanguageSwitcher() {
   const locale = useLocale();
   const pathname = usePathname();
 
+  console.log("LanguageSwitcher locale:", locale, "pathname:", pathname);
+
   const pathnameWithoutLocale = pathname.replace(new RegExp(`^/${locale}`), "");
 
   const current = localeMeta.find((lang) => lang.code === locale) ?? {

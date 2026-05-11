@@ -26,12 +26,13 @@ export default async function DuriansPage({ params }: Props) {
   if (!todayInventory.length) {
     return (
       <div className="min-h-screen">
-        <div className="h-[20vh] p-6 py-12 text-center text-gray-500">
+        <div className="h-[20vh] space-y-3 p-6 py-12 text-center text-gray-500">
           <p>
-            ({t("durians.today")} {penangDate}) {t("durians.empty")}
+            {t("durians.today")} {penangDate}
           </p>
+          <p>{t("durians.empty")}</p>
 
-          <p className="mt-2 text-sm">{t("durians.emptyDesc")}</p>
+          <p>{t("durians.emptyDesc")}</p>
         </div>
       </div>
     );
@@ -40,9 +41,12 @@ export default async function DuriansPage({ params }: Props) {
   return (
     <div className="p-6">
       <h1 className="mt-4 text-center text-2xl font-bold">{penangDate}</h1>
-      <h1 className="mb-8 text-center text-2xl font-bold">
-        <Link href="/">{t("home.title")}</Link>還有的果
-      </h1>
+      <div className="flex flex-col space-y-2">
+        <h1 className="mb-8 text-center text-2xl font-bold">
+          <Link href="/">{t("home.title")}</Link>
+        </h1>
+        <p>{t("durians.inventories")}</p>
+      </div>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {todayInventory.map((item: InventoryItem) => (
           <div
